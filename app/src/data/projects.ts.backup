@@ -1,0 +1,657 @@
+import type { Project } from '@/types';
+
+export const projects: Project[] = [
+  {
+    id: 'research-platform',
+    title: 'Autonomous Research Intelligence Platform (ARIP)',
+    tagline: 'Multi-agent research system with ReAct pattern and human-in-the-loop',
+    difficulty: 'Advanced',
+    industryStandard: 'Perplexity Enterprise / Glean',
+    techStack: ['FastAPI', 'WebSockets', 'Qdrant', 'React', 'Redis', 'PostgreSQL', 'Celery', 'vLLM'],
+    prerequisites: ['module-1', 'module-2', 'module-4'],
+    scope: {
+      problem: 'Organizations struggle with research bottlenecks. Analysts spend 60-80% of their time gathering information, verifying sources, and synthesizing reports. Existing search engines provide raw results without synthesis. Enterprises need an intelligent system that can autonomously research topics, verify facts across multiple sources, and generate well-cited reports with human oversight at critical decision points.',
+      targetUsers: 'Research analysts, consulting teams, due diligence professionals, academic researchers',
+      successMetrics: [
+        'Reduce research time from 8 hours to 45 minutes per topic',
+        'Achieve >95% citation accuracy (every claim linked to sources)',
+        'Support human review at 3+ checkpoint gates',
+        'Handle 100+ concurrent research sessions',
+        'Sub-200ms response time for real-time updates'
+      ],
+      rationale: {
+        why: 'Research is the foundation of decision-making in enterprises, yet it remains one of the most time-consuming and error-prone activities. Manual research processes cannot scale with the volume of information available today. Without automation, organizations make decisions based on incomplete research or waste valuable analyst time on repetitive information gathering. ARIP addresses this by creating an autonomous system that can research 24/7, verify facts across sources, and maintain perfect citation accuracy - allowing humans to focus on high-value analysis and judgment.',
+        what: 'A production-grade multi-agent research platform that autonomously researches topics, verifies facts across multiple sources, synthesizes findings into well-cited reports, and incorporates human review at critical decision points. The system supports 100+ concurrent research sessions with real-time progress updates, handles PDFs, web pages, and structured data, and integrates with enterprise knowledge bases.',
+        how: 'Build using FastAPI for the backend API, WebSockets for real-time updates, Qdrant for vector search of research documents, PostgreSQL for transactional data, Redis for caching and session state, Celery for background job processing, and React for the frontend. Implement a multi-agent architecture with specialized agents (Researcher, FactChecker, Writer, Reviewer) coordinated by an Agent Orchestrator. Use RAG (Retrieval-Augmented Generation) for grounded research, implement human-in-the-loop checkpoints for critical decisions, and deploy on Kubernetes for scalability.'
+      }
+    },
+    phases: [
+      {
+        name: 'Phase 1: High-Level System Architecture (HLD)',
+        duration: 'Week 1',
+        focus: 'System Design & Component Architecture',
+        rationale: {
+          why: 'Before writing any code, we must understand the system boundaries, component responsibilities, and how they interact. Poor architectural decisions made early are exponentially expensive to fix later. This phase ensures we design a system that can scale to 100+ concurrent sessions, maintain fault isolation, and support the complex multi-agent workflow required for autonomous research.',
+          what: 'Complete high-level architectural documentation including C4 diagrams (Context and Container levels), component responsibility definitions, data flow diagrams, and technology stack justification. Define clear boundaries between API Gateway, Agent Orchestrator, Research Engine, Fact Checker, Report Generator, Human Review Service, and supporting infrastructure.',
+          how: 'Use the C4 modeling approach to document architecture at different abstraction levels. Start with System Context to show ARIP in relation to external systems (LLM providers, search APIs, document stores). Progress to Container diagrams showing deployable units. Define interfaces between components using interface contracts. Document failure modes and how components scale independently.'
+        },
+        steps: [
+          {
+            id: 'arip-p1-s1',
+            phase: 'Phase 1',
+            title: 'Design System Context & Boundaries (C4 Level 1-2)',
+            description: 'Create the high-level system context diagram showing ARIP and its external dependencies (LLM providers, search APIs, document stores, user interfaces). Design the container diagram showing major deployable units: API Gateway, Agent Orchestrator, Research Engine, Fact Checker, Report Generator, Human Review Service, WebSocket Server, and Background Workers. Define clear boundaries and interfaces between each container.',
+            moduleRef: 'module-2',
+            estimatedHours: 8,
+            rationale: {
+              why: 'Without clear system boundaries, components become tightly coupled, making the system fragile and difficult to scale. Understanding external dependencies upfront prevents integration surprises later. The C4 model provides a structured way to communicate architecture to both technical and non-technical stakeholders.',
+              what: 'C4 Level 1 (System Context) showing ARIP and all external actors/systems. C4 Level 2 (Container) showing the major deployable units within ARIP. Interface contracts defining how containers communicate. Technology stack justification explaining why each technology was chosen.',
+              how: 'Start by identifying all external systems: LLM APIs (OpenAI, Anthropic), search engines (Google, Bing), document stores (S3/MinIO), databases (PostgreSQL, Redis, Qdrant), and user interfaces (React web app). Draw System Context diagram. Then decompose ARIP into containers: API Gateway (FastAPI), Agent Orchestrator, Research Engine, Fact Checker, Report Generator, Human Review Service, WebSocket Server, Background Workers. Draw Container diagram showing relationships. Document interfaces using REST API contracts or message schemas. Justify technology choices based on requirements.'
+            },
+            deliverables: [
+              'C4 Level 1: System Context Diagram',
+              'C4 Level 2: Container Diagram with all deployable units',
+              'External dependencies inventory (LLM APIs, search engines, auth providers)',
+              'System boundary definitions and interface contracts',
+              'Technology stack justification document'
+            ],
+            thinkingQuestions: [
+              'Why separate Agent Orchestrator from Research Engine?',
+              'What are the failure modes if Human Review Service is down?',
+              'How do components scale independently?',
+              'Which containers need to be stateful vs stateless?',
+              'What are the security boundaries between public and internal APIs?'
+            ],
+            validationCriteria: [
+              'Architecture supports 100+ concurrent research tasks',
+              'Single container failure doesn\'t cascade (fault isolation)',
+              'Clear data flow between all containers documented',
+              'Authentication/authorization boundaries defined',
+              'Each container has single responsibility'
+            ],
+            isCompleted: false,
+            isLocked: false
+          },
+          {
+            id: 'arip-p1-s2',
+            phase: 'Phase 1',
+            title: 'Design Agent Framework Architecture',
+            description: 'Design the agent framework using design patterns. Define the BaseAgent abstract class with lifecycle hooks. Design the State Machine for research task progression (Idle → Planning → Researching → Fact-Checking → Writing → Reviewing → Completed). Use Observer pattern for progress updates, Strategy pattern for different research approaches, and Template Method for agent execution flow.',
+            moduleRef: 'module-2',
+            estimatedHours: 10,
+            rationale: {
+              why: 'The agent framework is the core of ARIP. Without a well-designed framework, agents will be inconsistent, difficult to test, and prone to errors. Design patterns provide proven solutions to common problems - State Machine ensures valid state transitions, Observer enables loose coupling for progress updates, Strategy allows flexible research algorithms, and Template Method defines consistent agent lifecycles.',
+              what: 'A robust agent framework with: BaseAgent abstract class defining the agent contract, State Machine for task lifecycle management, Observer pattern for broadcasting progress updates, Strategy pattern for pluggable research algorithms, and clear agent communication protocols.',
+              how: 'Design BaseAgent as an abstract class with lifecycle methods (initialize, execute, cleanup) and state management. Implement State Machine with states: Idle, Planning, Researching, Fact-Checking, Writing, Reviewing, Completed. Define valid transitions and guard conditions. Use Observer pattern where agents publish events (ProgressUpdated, StateChanged, TaskCompleted) and subscribers (WebSocket broadcaster, database logger) react. Implement Strategy pattern for ResearchAlgorithm interface with concrete implementations (WebSearchStrategy, DocumentAnalysisStrategy, ExpertInterviewStrategy). Use Template Method for common agent execution flow while allowing subclasses to override specific steps.'
+            },
+            deliverables: [
+              'BaseAgent class UML diagram with abstract methods',
+              'Agent State Machine diagram with all transitions',
+              'Observer pattern design for progress broadcasting',
+              'Strategy pattern for ResearchAlgorithm selection',
+              'Agent communication protocol (sync vs async)'
+            ],
+            thinkingQuestions: [
+              'Why Template Method vs Strategy for agent execution?',
+              'How do agents communicate - direct method calls or message broker?',
+              'What constitutes agent state vs working memory?',
+              'How do you prevent memory leaks in long-running agents?',
+              'How do you serialize agent state for persistence?'
+            ],
+            validationCriteria: [
+              'Design supports 5+ agent types (Researcher, FactChecker, Writer, Reviewer, Planner)',
+              'Agents can be developed and tested in isolation',
+              'Memory usage bounded (configurable max memory per agent)',
+              'State transitions are validatable and reversible',
+              'Clear extension points for new agent types'
+            ],
+            isCompleted: false,
+            isLocked: false
+          },
+          {
+            id: 'arip-p1-s3',
+            phase: 'Phase 1',
+            title: 'Design Data Architecture & Storage Strategy',
+            description: 'Design comprehensive data architecture. Define PostgreSQL schema for transactional data (users, research tasks, reports, audit logs). Design Redis caching strategy for session state and real-time progress. Design Qdrant vector DB schema for document embeddings and semantic search. Design MinIO/S3 storage for documents and generated reports. Plan data retention and archival policies.',
+            moduleRef: 'module-2',
+            estimatedHours: 8,
+            rationale: {
+              why: 'Different data types have different access patterns and consistency requirements. Relational data needs ACID transactions, session state needs low-latency access, vector embeddings need similarity search, and files need object storage. Using the wrong storage for each type leads to performance issues, data inconsistency, and scalability problems.',
+              what: 'A polyglot persistence architecture with: PostgreSQL for structured transactional data, Redis for caching and real-time state, Qdrant for vector similarity search of document embeddings, MinIO/S3 for document and report storage. Clear data flow between stores with defined consistency boundaries.',
+              how: 'Design PostgreSQL schema with tables: users, research_tasks, agents, reports, citations, audit_logs. Define relationships and indexes for query performance. Design Redis key structure: session:{session_id}, progress:{task_id}, cache:{query_hash}. Use TTL for automatic cleanup. Design Qdrant collections: document_chunks with vector payload containing text, metadata, source. Define distance metric (Cosine) and indexing params. Design MinIO bucket structure: documents/{user_id}/{task_id}/, reports/{user_id}/{task_id}/. Define data retention: transactional data 7 years (compliance), cache 24 hours, vector embeddings retained with document, files retained with research task. Implement event-driven synchronization between stores.'
+            },
+            deliverables: [
+              'Entity Relationship Diagram (ERD) for PostgreSQL',
+              'Database schema with indexes and constraints',
+              'Redis key structure and caching strategy',
+              'Vector DB collections design (documents, chunks, embeddings)',
+              'File storage architecture and organization',
+              'Data retention and GDPR compliance plan'
+            ],
+            thinkingQuestions: [
+              'What data belongs in PostgreSQL vs Redis vs Vector DB?',
+              'How do you handle concurrent updates to research tasks?',
+              'What\'s your strategy for schema migrations?',
+              'How do you ensure data consistency across stores?',
+              'What\'s your backup and disaster recovery strategy?'
+            ],
+            validationCriteria: [
+              'Schema supports ACID transactions for critical operations',
+              'Caching reduces DB load by 80%+',
+              'Design handles 1M+ research tasks, 10M+ documents',
+              'Query latency <50ms for common operations',
+              'GDPR-compliant data deletion capability'
+            ],
+            isCompleted: false,
+            isLocked: false
+          }
+        ]
+      },
+      {
+        name: 'Phase 2: Low-Level Design (LLD) & Component Details',
+        duration: 'Week 2',
+        focus: 'Component Design & Internal Architecture',
+        rationale: {
+          why: 'High-level architecture defines what components exist, but LLD defines how they work internally. Without detailed component design, developers will make inconsistent implementation decisions leading to integration issues, performance problems, and technical debt.',
+          what: 'Detailed internal architecture of key components: Agent Orchestrator internals, Research Engine & RAG Pipeline, Human Review & Workflow Engine. Class diagrams, sequence diagrams, algorithm specifications, and data flow within components.',
+          how: 'For each critical component, create detailed design documents. Use UML class diagrams to show internal classes and relationships. Use sequence diagrams to show interactions for key workflows. Specify algorithms (e.g., RAG pipeline steps). Define internal data structures and interfaces between sub-components.'
+        },
+        steps: [
+          {
+            id: 'arip-p2-s1',
+            phase: 'Phase 2',
+            title: 'Design Agent Orchestrator Internals',
+            description: 'Design the internal architecture of the Agent Orchestrator. Define the task scheduler using Priority Queue. Design the worker pool pattern for agent execution. Plan agent lifecycle management (creation, execution, monitoring, cleanup). Design the event bus for inter-agent communication. Define concurrency control to prevent resource exhaustion.',
+            moduleRef: 'module-2',
+            estimatedHours: 8,
+            rationale: {
+              why: 'The Agent Orchestrator is the brain that coordinates all research activities. Poor orchestrator design leads to resource exhaustion, agent conflicts, or tasks stuck in queues. We need precise control over agent scheduling, execution, and lifecycle to ensure efficient resource usage and task completion.',
+              what: 'Complete internal design of the Agent Orchestrator including: Task scheduler with priority queue implementation, Worker pool for concurrent agent execution, Agent lifecycle management (create, monitor, cleanup), Event bus for agent communication, Resource limits and throttling mechanisms.',
+              how: 'Design TaskScheduler class using heap-based Priority Queue supporting task priorities (Enterprise > Pro > Free). Implement WorkerPool with configurable size (default 100 workers). Each worker runs agents in isolated subprocesses or containers. Design AgentLifecycleManager tracking agent state (Created → Running → Paused → Completed → Cleaned). Use EventBus (Redis Pub/Sub or RabbitMQ) for inter-agent communication. Implement ResourceThrottler tracking CPU, memory, and API rate limits. Use semaphores to control concurrent agent execution.'
+            },
+            deliverables: [
+              'Agent Orchestrator class diagram',
+              'Task scheduler design (Priority Queue implementation)',
+              'Worker pool architecture diagram',
+              'Agent lifecycle state machine',
+              'Event bus and message routing design',
+              'Resource limits and throttling strategy'
+            ],
+            thinkingQuestions: [
+              'How many concurrent agents can run per worker?',
+              'What scheduling algorithm prioritizes tasks?',
+              'How do you handle agent crashes and retries?',
+              'What\'s your backpressure strategy when overloaded?',
+              'How do you gracefully shutdown with running agents?'
+            ],
+            validationCriteria: [
+              'Supports 100 concurrent agents per orchestrator instance',
+              'Task scheduling is fair and prevents starvation',
+              'Agent failures are isolated and retryable',
+              'Resource usage stays within configured limits',
+              'Graceful degradation under load'
+            ],
+            isCompleted: false,
+            isLocked: false
+          },
+          {
+            id: 'arip-p2-s2',
+            phase: 'Phase 2',
+            title: 'Design Research Engine & RAG Pipeline',
+            description: 'Design the Research Engine architecture. Define document ingestion pipeline (parsing, chunking, embedding). Design hybrid search architecture (BM25 + Dense embeddings). Plan reranking strategy using Reciprocal Rank Fusion (RRF). Design citation tracking system to link claims to sources. Define prompt engineering strategy for different research phases.',
+            moduleRef: 'module-4',
+            estimatedHours: 10,
+            rationale: {
+              why: 'The Research Engine is where information retrieval happens. Poor design leads to irrelevant results, high latency, or inability to verify claims. A well-designed RAG (Retrieval-Augmented Generation) pipeline ensures the AI has access to relevant, factual information and can cite sources accurately - critical for enterprise research use cases.',
+              what: 'Complete Research Engine design with: Document ingestion pipeline, Hybrid search (BM25 + Dense), Reranking with RRF, Citation tracking system, Prompt templates for research phases.',
+              how: 'Design DocumentIngestionPipeline: DocumentParser (supports PDF, HTML, DOCX) → TextExtractor → Chunker (sliding window, 512 tokens, 20% overlap) → EmbeddingGenerator (OpenAI text-embedding-3-large) → VectorStoreIndexer (Qdrant). Design HybridSearch: Sparse retrieval using BM25 on text chunks + Dense retrieval using vector similarity, fused with Reciprocal Rank Fusion (RRF) with k=60. Design CitationTracker maintaining graph of claims → sources with confidence scores. Design prompts: PlanningPhase ("Given query {query}, what are 3 key sub-questions?"), ResearchPhase ("Search for information about {subquery} using tools"), SynthesisPhase ("Synthesize findings with citations using format [source_id]").'
+            },
+            deliverables: [
+              'Research Engine component diagram',
+              'Document ingestion pipeline flow',
+              'Chunking strategy document (size, overlap, boundaries)',
+              'Hybrid search architecture (BM25 + Dense + RRF)',
+              'Citation tracking and verification system design',
+              'Prompt templates for each research phase'
+            ],
+            thinkingQuestions: [
+              'What chunk size optimizes context vs precision?',
+              'How do you balance keyword vs semantic search?',
+              'How do you verify every claim has 2+ sources?',
+              'What metadata do you store with each chunk?',
+              'How do you handle multi-hop reasoning (chaining searches)?'
+            ],
+            validationCriteria: [
+              'Retrieval latency <200ms for 100k documents',
+              'Citation accuracy >95% (every claim traceable)',
+              'Supports multi-hop reasoning (3+ chained searches)',
+              'Source diversity enforced (max 30% from single domain)',
+              'Handles PDFs, web pages, and structured data'
+            ],
+            isCompleted: false,
+            isLocked: false
+          },
+          {
+            id: 'arip-p2-s3',
+            phase: 'Phase 2',
+            title: 'Design Human Review & Workflow Engine',
+            description: 'Design the human-in-the-loop workflow system. Define review checkpoint locations in the research pipeline. Design reviewer assignment logic (round-robin, load-based, expertise matching). Plan review UI workflow and notification system. Design escalation paths for disagreements or timeouts. Define review persistence and audit trail.',
+            moduleRef: 'module-2',
+            estimatedHours: 6,
+            rationale: {
+              why: 'AI systems can hallucinate or make errors that have serious business consequences. Human oversight is essential for high-stakes decisions. The workflow engine must seamlessly integrate human judgment without creating bottlenecks or losing context.',
+              what: 'Human review workflow design: Checkpoint definitions in pipeline, Reviewer assignment algorithms, Review UI workflow, Notification system, Escalation paths, Audit trail for compliance.',
+              how: 'Design checkpoints: After Planning (review strategy), After Research (review sources), After Writing (review report). Use RoundRobinAssignment for load balancing, or ExpertiseMatching for specialized topics. Design ReviewWorkflow: Pending → Assigned → InReview → Decision (Approve/Reject/RequestChanges) → Complete. Use NotificationService (email, in-app, WebSocket) with urgency levels. Design Escalation: if no response in 24h, escalate to manager; if reviewer unavailable, reassign. Implement AuditTrail logging all review actions with timestamps and justifications.'
+            },
+            deliverables: [
+              'Human review workflow diagram',
+              'Review checkpoint locations in pipeline',
+              'Reviewer assignment algorithm design',
+              'Review state machine (Pending → InReview → Approved/Rejected)',
+              'Notification system design (email, in-app, WebSocket)',
+              'Escalation and reassignment logic'
+            ],
+            thinkingQuestions: [
+              'How do you prevent review bottlenecks?',
+              'What\'s the SLA for human review?',
+              'How do you handle timezone differences?',
+              'What\'s your audit trail for compliance?',
+              'How do you handle reviewer unavailability?'
+            ],
+            validationCriteria: [
+              'Human review adds <24h to total research time',
+              'Clear audit trail of all decisions',
+              'Escalation path for edge cases',
+              'Reviewer productivity metrics tracked',
+              'Notifications delivered within 5 minutes'
+            ],
+            isCompleted: false,
+            isLocked: false
+          }
+        ]
+      }
+    ],
+    completionPercentage: 0,
+    status: 'locked'
+  },
+  {
+    id: 'ai-gateway',
+    title: 'Distributed AI Gateway & Intelligent Router',
+    tagline: 'High-throughput LLM router with consistent hashing, circuit breakers, and smart model selection',
+    difficulty: 'Expert',
+    industryStandard: 'LiteLLM Proxy / OpenRouter',
+    techStack: ['FastAPI', 'Redis', 'Kubernetes', 'Prometheus', 'gRPC', 'Envoy', 'PostgreSQL'],
+    prerequisites: ['module-1', 'module-3', 'module-5'],
+    scope: {
+      problem: 'Organizations using multiple LLM providers face challenges: inconsistent APIs, difficult failover management, no unified rate limiting, and inability to optimize costs by routing requests to appropriate models. Engineering teams need a unified gateway that intelligently routes requests across providers (OpenAI, Anthropic, Azure, self-hosted), handles failures gracefully, and optimizes for cost vs latency vs quality.',
+      targetUsers: 'Engineering teams, DevOps, ML Platform engineers',
+      successMetrics: [
+        'Support 10,000+ requests per minute across 10+ model providers',
+        '99.99% uptime with automatic failover <100ms',
+        'Reduce LLM costs by 30% through intelligent routing',
+        'p99 latency <500ms including routing overhead',
+        'Zero-downtime deployments with traffic shifting'
+      ],
+      rationale: {
+        why: 'As organizations adopt multiple LLM providers (OpenAI, Anthropic, Azure, self-hosted), they face API inconsistencies, difficult failover management, and lack of unified observability. Each provider has different rate limits, pricing, and capabilities. Without a gateway, teams struggle with inconsistent implementations, vendor lock-in, and inability to optimize costs by routing simple queries to cheaper models and complex queries to premium models.',
+        what: 'A high-throughput AI Gateway that provides a unified API across all LLM providers, intelligent routing based on prompt complexity, automatic failover with circuit breakers, distributed rate limiting, request/response caching, and comprehensive observability. The gateway supports 10,000+ RPM with 99.99% uptime and reduces costs by 30% through smart routing.',
+        how: 'Build using FastAPI for high-performance async API handling, Redis for distributed rate limiting and caching, Kubernetes for container orchestration with HPA, Prometheus/Grafana for monitoring, gRPC for internal service communication, Envoy for edge proxy and load balancing. Implement consistent hashing for request routing, token bucket algorithm for rate limiting, circuit breaker pattern for resilience, and prompt complexity classifier for intelligent routing.'
+      }
+    },
+    phases: [
+      {
+        name: 'Phase 1: High-Level System Architecture (HLD)',
+        duration: 'Week 1',
+        focus: 'Gateway Core Architecture',
+        rationale: {
+          why: 'The gateway sits in the critical path of all AI requests. Poor architecture leads to single points of failure, inability to scale, or cascading failures when providers go down. We need a design that can handle massive throughput, route intelligently, and maintain availability even when multiple providers fail.',
+          what: 'Complete architectural design of the AI Gateway including: C4 diagrams showing gateway and external dependencies, component architecture (Request Router, Rate Limiter, Circuit Breaker, Cache Layer, Provider Adapters), request flow from client to LLM provider and back, and high-availability design with no single points of failure.',
+          how: 'Use C4 modeling to document the gateway at context and container levels. Identify all external systems: LLM providers (OpenAI, Anthropic, Azure, self-hosted), monitoring (Prometheus), caching (Redis), load balancing (Envoy). Design internal components with clear responsibilities: API Gateway receives requests, Request Router determines destination, Rate Limiter enforces quotas, Circuit Breaker handles failures, Cache Layer stores responses, Provider Adapters normalize APIs. Document request flow: Client → Envoy → API Gateway → Router → (Rate Limiter → Circuit Breaker → Cache → Provider Adapter) → LLM Provider → Response flows back. Design for horizontal scaling with stateless components.'
+        },
+        steps: [
+          {
+            id: 'gateway-p1-s1',
+            phase: 'Phase 1',
+            title: 'Design Gateway Context & Component Architecture',
+            description: 'Create C4 diagrams showing the AI Gateway and its external dependencies (LLM providers, load balancers, monitoring systems). Design the container architecture including: API Gateway, Request Router, Rate Limiter, Circuit Breaker, Cache Layer, Provider Adapters, and Admin Dashboard. Define clear responsibilities and interfaces between components.',
+            moduleRef: 'module-2',
+            estimatedHours: 8,
+            rationale: {
+              why: 'Without clear system boundaries and component responsibilities, the gateway becomes a monolithic mess that is difficult to scale or maintain. Understanding the full context upfront prevents integration issues and ensures the design can handle the required throughput and availability.',
+              what: 'C4 Level 1 (System Context) showing gateway and all external actors. C4 Level 2 (Container) showing internal components and their interactions. Component responsibility matrix. Interface contracts between components. High-availability architecture with no single points of failure.',
+              how: 'Start with external dependencies: LLM Providers (OpenAI, Anthropic, Azure, self-hosted), Client Applications (web, mobile, backend services), Monitoring (Prometheus, Grafana), Caching (Redis), Load Balancer (Envoy/Nginx). Draw System Context. Then decompose gateway into: API Gateway (FastAPI), Request Router, Rate Limiter (Redis-backed), Circuit Breaker, Cache Layer, Provider Adapters (one per LLM provider), Admin Dashboard. Draw Container diagram. Define interfaces: REST API between Gateway and Router, internal gRPC for service communication, Redis protocol for caching/rate limiting, Prometheus metrics endpoint.'
+            },
+            deliverables: [
+              'C4 Level 1-2: System Context and Container Diagrams',
+              'Component responsibility matrix',
+              'External provider integration interfaces',
+              'System boundary and trust zones',
+              'High-availability architecture design'
+            ],
+            thinkingQuestions: [
+              'Why separate Request Router from Rate Limiter?',
+              'How do Provider Adapters handle different API formats?',
+              'What components need to be replicated for HA?',
+              'How do you prevent gateway from being a single point of failure?',
+              'Which components are stateful vs stateless?'
+            ],
+            validationCriteria: [
+              'Architecture supports 10,000+ RPM',
+              'No single point of failure',
+              'Components can scale independently',
+              'Clear separation of concerns',
+              'Provider failures are isolated'
+            ],
+            isCompleted: false,
+            isLocked: false
+          },
+          {
+            id: 'gateway-p1-s2',
+            phase: 'Phase 1',
+            title: 'Design Request Routing & Load Balancing',
+            description: 'Design the request routing layer. Implement consistent hashing for request distribution. Design virtual node strategy for even load distribution. Plan node health checking and automatic removal. Design weighted routing for canary deployments. Define request affinity (sticky sessions) requirements.',
+            moduleRef: 'module-1',
+            estimatedHours: 10,
+            rationale: {
+              why: 'Routing is the core function of the gateway. Poor routing leads to hot spots, uneven load distribution, or failed requests during scaling events. Consistent hashing ensures minimal disruption when nodes are added/removed, while virtual nodes prevent hot spots on individual servers.',
+              what: 'Complete routing layer design: Consistent hashing algorithm, Virtual node placement strategy, Health check mechanism, Weighted routing for canary deployments, Request affinity handling.',
+              how: 'Design ConsistentHashRouter using ring-based approach: Hash each node to multiple points on ring (virtual nodes, default 150 per node), Hash request key (API key + request ID), Find next node clockwise on ring. Use MD5 or MurmurHash for even distribution. Implement HealthChecker pinging nodes every 5 seconds, marking unhealthy after 3 failures, removing from ring after 30 seconds. Implement WeightedRouting for canary: 90% traffic to v1, 10% to v2. Implement RequestAffinity using source IP hashing for WebSocket connections.'
+            },
+            deliverables: [
+              'Consistent hashing algorithm design',
+              'Virtual node placement strategy',
+              'Health check mechanism design',
+              'Weighted routing for canary deployments',
+              'Request affinity handling',
+              'Load distribution analysis'
+            ],
+            thinkingQuestions: [
+              'How many virtual nodes per physical node?',
+              'What hash function minimizes collisions?',
+              'How do you handle node addition/removal?',
+              'What health check frequency and timeout?',
+              'How do you prevent thundering herd on node join?'
+            ],
+            validationCriteria: [
+              'Adding node affects only 1/N keys',
+              'Load variance <5% across nodes',
+              'Health checks detect failures in <5 seconds',
+              'Zero-downtime node replacement',
+              'O(log N) lookup time'
+            ],
+            isCompleted: false,
+            isLocked: false
+          },
+          {
+            id: 'gateway-p1-s3',
+            phase: 'Phase 1',
+            title: 'Design Multi-Provider Adapter Architecture',
+            description: 'Design adapter pattern for different LLM providers (OpenAI, Anthropic, Azure, self-hosted). Define common request/response interface. Design provider-specific authentication handling. Plan request/response transformation logic. Design fallback and retry strategies per provider.',
+            moduleRef: 'module-2',
+            estimatedHours: 8,
+            rationale: {
+              why: 'Each LLM provider has different API formats, authentication methods, and response structures. Without adapters, the gateway code becomes a mess of if-else statements for each provider. The adapter pattern provides a clean abstraction that makes adding new providers trivial and ensures consistent behavior across all providers.',
+              what: 'Adapter architecture: Base adapter interface, Provider-specific adapters (OpenAI, Anthropic, Azure, self-hosted), Common request/response DTOs, Authentication handling, Request/response transformers, Fallback/retry strategies.',
+              how: 'Design BaseLLMAdapter interface with methods: send_request(request: LLMRequest) -> LLMResponse, supports_streaming() -> bool, get_rate_limits() -> RateLimits. Implement OpenAIAdapter: Transform request to OpenAI format, add Authorization: Bearer {api_key} header, handle streaming SSE responses, parse rate limit headers (x-ratelimit-remaining). Implement AnthropicAdapter: Transform to Anthropic format, add x-api-key header, handle different response structure. Implement AzureAdapter: Add api-key header, construct Azure-specific URL. Design FallbackStrategy: On failure, retry with exponential backoff (1s, 2s, 4s, 8s), after max retries, fallback to backup provider.'
+            },
+            deliverables: [
+              'Adapter pattern class diagram',
+              'Common LLM interface specification',
+              'Provider authentication handling design',
+              'Request/response transformation mappings',
+              'Fallback and retry strategy matrix',
+              'Provider capability registry design'
+            ],
+            thinkingQuestions: [
+              'How do you normalize different API formats?',
+              'What\'s your strategy for streaming responses?',
+              'How do you handle provider-specific features?',
+              'What\'s your circuit breaker threshold per provider?',
+              'How do you load balance across provider regions?'
+            ],
+            validationCriteria: [
+              'Supports 10+ LLM providers',
+              'Common interface abstracts provider differences',
+              'Authentication is secure and rotatable',
+              'Fallback to backup provider <100ms',
+              'Provider failures don\'t affect others'
+            ],
+            isCompleted: false,
+            isLocked: false
+          }
+        ]
+      },
+      {
+        name: 'Phase 2: Core Algorithms & Resilience',
+        duration: 'Week 2',
+        focus: 'Rate Limiting, Circuit Breakers & Queue Management',
+        rationale: {
+          why: 'Production systems face real-world challenges: rate limits from providers, cascading failures when services go down, and uneven request loads. Without proper algorithms for rate limiting, circuit breaking, and request scheduling, the gateway will either overwhelm providers, fail catastrophically, or provide poor quality of service.',
+          what: 'Robust algorithm layer: Token bucket rate limiting for fairness, Circuit breaker pattern for fault tolerance, Priority queue for request scheduling, Request aging to prevent starvation, Bulkhead pattern for resource isolation.',
+          how: 'Implement TokenBucket with Redis for distributed state, allowing burst traffic while enforcing sustained rate limits. Design CircuitBreaker with states (Closed, Open, Half-Open) that opens after 5 consecutive failures, allowing test requests in Half-Open state. Use Heap-based PriorityQueue with aging to schedule requests by tier (Enterprise > Pro > Free) while preventing starvation. Implement Bulkhead pattern to isolate resources per provider.'
+        },
+        steps: [
+          {
+            id: 'gateway-p2-s1',
+            phase: 'Phase 2',
+            title: 'Design Distributed Rate Limiting System',
+            description: 'Design token bucket algorithm for distributed rate limiting. Support per-user, per-model, per-organization limits. Plan Redis-based state synchronization. Design sliding window for precise limiting. Define rate limit headers and error responses.',
+            moduleRef: 'module-1',
+            estimatedHours: 8,
+            rationale: {
+              why: 'Rate limiting prevents abuse, ensures fair usage across customers, and protects downstream providers from being overwhelmed. Without distributed rate limiting, different gateway instances would have inconsistent views of usage, allowing customers to exceed limits by hitting different instances.',
+              what: 'Distributed rate limiting: Token bucket algorithm, Per-user/model/org quotas, Redis synchronization, Sliding window precision, Rate limit headers, Error responses with retry-after.',
+              how: 'Design TokenBucket with capacity (burst), refill rate (sustained), and Redis storage. Key format: "ratelimit:{user_id}:{model}". Use Redis Lua scripts for atomic decrement-and-check operations. Implement SlidingWindowCounter for more precise limiting over time windows. Return headers: X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset. On limit exceeded, return 429 Too Many Requests with Retry-After header.'
+            },
+            deliverables: [
+              'Token bucket algorithm design',
+              'Redis data structure for rate limits',
+              'Rate limit header specification',
+              'Sliding window implementation plan',
+              'Burst handling strategy',
+              'Rate limit error response design'
+            ],
+            thinkingQuestions: [
+              'Token bucket vs sliding window trade-offs?',
+              'How do you prevent race conditions in Redis?',
+              'What happens to requests during Redis failure?',
+              'How do you handle burst vs sustained traffic?',
+              'What\'s your retry-after calculation?'
+            ],
+            validationCriteria: [
+              'Burst capacity configurable per endpoint',
+              'Thread-safe implementation',
+              'Redis failure degrades gracefully',
+              'Rate limit precision >99%',
+              'Headers inform clients of limits'
+            ],
+            isCompleted: false,
+            isLocked: false
+          }
+        ]
+      }
+    ],
+    completionPercentage: 0,
+    status: 'locked'
+  },
+  {
+    id: 'code-reviewer',
+    title: 'Autonomous Code Review Agent',
+    tagline: 'AI-powered code review bot using AST analysis and multi-agent architecture',
+    difficulty: 'Advanced',
+    industryStandard: 'CodeRabbit / PR-Agent',
+    techStack: ['Python', 'FastAPI', 'GitHub API', 'AST', 'OpenAI', 'Celery', 'PostgreSQL'],
+    prerequisites: ['module-1', 'module-2', 'module-4'],
+    scope: {
+      problem: 'Development teams struggle with code review bottlenecks. PRs sit idle for days waiting for review. Junior developers need guidance on best practices. Critical security issues get missed. Teams need an intelligent code review agent that can automatically analyze PRs, detect bugs, security vulnerabilities, and style violations while providing constructive feedback.',
+      targetUsers: 'Development teams, Tech leads, Security engineers',
+      successMetrics: [
+        'Review 90% of PRs within 5 minutes of submission',
+        'Detect >80% of security issues (OWASP Top 10)',
+        'Reduce human review time by 50%',
+        '<5% false positive rate on suggestions',
+        'Support Python, JavaScript, TypeScript, Go'
+      ],
+      rationale: {
+        why: 'Code review is essential for code quality but creates bottlenecks in development workflows. Teams waste hours waiting for reviews, and critical issues often slip through. Junior developers lack mentorship, and senior engineers spend too much time on repetitive reviews. An autonomous code review agent provides instant feedback, catches security issues early, and frees up human reviewers to focus on architecture and design.',
+        what: 'An AI-powered code review system that integrates with GitHub/GitLab, analyzes PRs using AST parsing and static analysis, detects security vulnerabilities, code smells, and style violations, and posts actionable comments on PRs. The system uses multi-agent architecture with specialized agents for security, performance, style, and best practices.',
+        how: 'Build using Python with FastAPI for webhook handling, tree-sitter/libCST for AST parsing across languages, Bandit/Semgrep for security analysis, Celery for async processing, PostgreSQL for storing review history, and OpenAI for natural language suggestion generation. Integrate with GitHub API for PR comments and use React for the configuration dashboard.'
+      }
+    },
+    phases: [
+      {
+        name: 'Phase 1: System Architecture & AST Framework',
+        duration: 'Week 1',
+        focus: 'Code Analysis Foundation',
+        rationale: {
+          why: 'Code analysis is the foundation of the review system. Without robust AST parsing, the system cannot understand code structure, identify issues accurately, or provide meaningful suggestions. The architecture must support multiple languages and scale to handle large repositories with thousands of files.',
+          what: 'Core architecture: Multi-language AST parsing framework, Multi-agent system design, Git platform integration, Background processing pipeline, Database schema for reviews.',
+          how: 'Design AST framework using tree-sitter for multi-language support. Create base parser interface with language-specific implementations. Design multi-agent architecture with coordinator and specialized agents (SecurityAgent, StyleAgent, PerformanceAgent). Implement webhook handlers for GitHub/GitLab events. Use Celery workers for async analysis. Design database schema for repositories, PRs, analyses, and comments.'
+        },
+        steps: [
+          {
+            id: 'reviewer-p1-s1',
+            phase: 'Phase 1',
+            title: 'Design Multi-Language AST Analysis Framework',
+            description: 'Design AST parsing framework supporting Python, JavaScript, TypeScript, and Go. Use Visitor pattern for AST traversal. Design code metrics extraction (complexity, coupling). Plan anti-pattern detection. Design language-agnostic issue representation.',
+            moduleRef: 'module-2',
+            estimatedHours: 10,
+            rationale: {
+              why: 'Different languages have different AST structures and syntax. Without a unified AST framework, each language would require separate analysis logic, leading to code duplication and inconsistent behavior. The Visitor pattern enables adding new analyses without modifying AST classes.',
+              what: 'AST framework: Language-agnostic base interfaces, tree-sitter integration, Visitor pattern implementation, Code metrics extraction, Anti-pattern detection, Issue representation.',
+              how: 'Design BaseASTParser interface with parse_file() and get_visitor() methods. Implement TreeSitterParser using tree-sitter bindings for each language. Create ASTVisitor base class with visit_method(), visit_class(), visit_function() callbacks. Implement ComplexityCalculator visitor counting cyclomatic complexity. Implement AntiPatternDetector visitor finding God classes, long methods. Design Issue class with fields: type, severity, line, column, message, suggestion.'
+            },
+            deliverables: [
+              'AST framework class diagram',
+              'Language parser implementations',
+              'Visitor pattern design',
+              'Code metrics specifications',
+              'Anti-pattern detection rules',
+              'Issue representation schema'
+            ],
+            thinkingQuestions: [
+              'How do you handle language-specific syntax?',
+              'What\'s the performance of tree-sitter parsing?',
+              'How do you add new analysis types?',
+              'What metrics correlate with bugs?',
+              'How do you normalize issues across languages?'
+            ],
+            validationCriteria: [
+              'Supports 4+ languages',
+              'Parsing <100ms per 1000 LOC',
+              'Extensible visitor system',
+              'Accurate line/column reporting',
+              'Low memory footprint'
+            ],
+            isCompleted: false,
+            isLocked: false
+          }
+        ]
+      }
+    ],
+    completionPercentage: 0,
+    status: 'locked'
+  },
+  {
+    id: 'universal-multimodal-agent',
+    title: 'Universal Multimodal Agent Platform',
+    tagline: 'Vision, audio, and text understanding with cross-modal reasoning',
+    difficulty: 'Expert',
+    industryStandard: 'GPT-4V / Google Gemini / Meta Aria',
+    techStack: ['PyTorch', 'FastAPI', 'WebRTC', 'Qdrant', 'Redis', 'ONNX', 'React'],
+    prerequisites: ['module-4'],
+    scope: {
+      problem: 'Current AI systems are limited to text-only interactions. Users need agents that can understand and reason across multiple modalities: analyzing images, processing audio conversations, watching videos, and synthesizing information across all inputs. Businesses need multimodal agents for visual inspection, meeting transcription, and video content analysis.',
+      targetUsers: 'Product teams, Operations, Content creators, Healthcare',
+      successMetrics: [
+        'Process images (1024x1024) in <200ms',
+        'Real-time audio transcription with <300ms latency',
+        'Cross-modal retrieval accuracy >85%',
+        'Handle 50+ concurrent multimodal sessions',
+        'Support 10+ languages for audio processing'
+      ],
+      rationale: {
+        why: 'The world is multimodal - humans communicate through vision, sound, and text simultaneously. Current AI systems that only process text miss crucial context from images, audio, and video. Businesses need AI that can analyze product images, transcribe meetings with context from shared screens, understand video content, and synthesize insights across all modalities.',
+        what: 'A multimodal AI platform that processes and reasons across vision, audio, and text in real-time. The system uses cross-modal attention to fuse information, supports WebRTC for real-time streaming, implements multimodal RAG for knowledge retrieval, and provides a unified chat interface for all modalities.',
+        how: 'Build using PyTorch for multimodal models (CLIP for vision, Whisper for audio, LLM for text), FastAPI for backend APIs, WebRTC for real-time media streaming, Qdrant for multimodal vector search, Redis for session management, ONNX for model optimization, and React for the chat interface. Implement cross-modal fusion using attention mechanisms and shared embedding spaces.'
+      }
+    },
+    phases: [
+      {
+        name: 'Phase 1: Multimodal Architecture & Processing',
+        duration: 'Week 1',
+        focus: 'Vision, Audio & Cross-Modal Design',
+        rationale: {
+          why: 'Multimodal processing requires specialized pipelines for each modality plus mechanisms to fuse them. Without careful architecture, the system becomes a disjointed collection of models that cannot reason across modalities. We need unified embeddings and attention mechanisms for true cross-modal understanding.',
+          what: 'Multimodal foundation: Vision processing pipeline (CLIP), Audio processing (Whisper), Cross-modal fusion architecture, Shared embedding space, Temporal alignment for video/audio.',
+          how: 'Design VisionProcessor using CLIP for image understanding: image encoder → embeddings. Design AudioProcessor using Whisper: audio → spectrogram → tokens → transcription. Design CrossModalFusion using attention layers that attend across vision and audio features. Create shared embedding space projecting all modalities into common vector space. Implement temporal alignment for synchronizing video frames with audio timestamps.'
+        },
+        steps: [
+          {
+            id: 'mma-p1-s1',
+            phase: 'Phase 1',
+            title: 'Design Vision Processing Pipeline',
+            description: 'Design vision processing using CLIP or Vision Transformers. Implement image preprocessing (resize, normalize). Design feature extraction. Plan object detection and recognition. Create image embedding generation.',
+            moduleRef: 'module-4',
+            estimatedHours: 8,
+            rationale: {
+              why: 'Vision is crucial for understanding visual content in images and video. Without robust vision processing, the agent cannot analyze charts, diagrams, product images, or video content. CLIP provides joint image-text embeddings enabling semantic image search and understanding.',
+              what: 'Vision pipeline: Image preprocessing, CLIP vision encoder, Feature extraction, Object detection, Image embeddings, Visual question answering.',
+              how: 'Design ImagePreprocessor: resize to 224x224, normalize with ImageNet stats. Integrate CLIP vision encoder (ViT-B/32 or ViT-L/14) for feature extraction. Implement ObjectDetector using YOLO or DETR for object localization. Create ImageEmbedder extracting 512-dim embeddings from CLIP. Design VisualQA module combining image features with text questions using cross-attention. Cache embeddings in Qdrant for similarity search.'
+            },
+            deliverables: [
+              'Vision pipeline architecture',
+              'Image preprocessing specifications',
+              'CLIP integration design',
+              'Object detection module',
+              'Embedding generation',
+              'Visual QA system'
+            ],
+            thinkingQuestions: [
+              'What image resolution to support?',
+              'CLIP vs custom ViT models?',
+              'How to handle batch processing?',
+              'What object categories to detect?',
+              'How to cache image embeddings?'
+            ],
+            validationCriteria: [
+              'Image processing <200ms',
+              'Supports up to 1024x1024',
+              'Object detection mAP >0.75',
+              'Embeddings enable semantic search',
+              'Visual QA accuracy >80%'
+            ],
+            isCompleted: false,
+            isLocked: false
+          }
+        ]
+      }
+    ],
+    completionPercentage: 0,
+    status: 'locked'
+  }
+];
+
+// Helper function to calculate project progress
+export function calculateProjectProgress(project: Project, completedSteps: string[]): number {
+  const totalSteps = project.phases.reduce((acc, phase) => acc + phase.steps.length, 0);
+  const completedStepsCount = project.phases.reduce((acc, phase) => {
+    return acc + phase.steps.filter(step => completedSteps.includes(step.id)).length;
+  }, 0);
+  
+  return totalSteps > 0 ? Math.round((completedStepsCount / totalSteps) * 100) : 0;
+}
+
+// Helper function to check if project prerequisites are met
+export function checkProjectPrerequisites(project: Project, completedModules: string[]): boolean {
+  return project.prerequisites.every(prereq => completedModules.includes(prereq));
+}
+
+// Helper function to check if a phase is unlocked
+export function isPhaseUnlocked(project: Project, phaseIndex: number, completedSteps: string[]): boolean {
+  if (phaseIndex === 0) return true;
+  
+  // Check if all steps in previous phase are completed
+  const previousPhase = project.phases[phaseIndex - 1];
+  return previousPhase.steps.every(step => completedSteps.includes(step.id));
+}
