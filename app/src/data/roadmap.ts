@@ -66,120 +66,97 @@ const dsaPatterns: DSAPattern[] = allDSAPatterns;
 const module1Resources: Resource[] = generateDSAResources();
 
 // Module 1: Comprehensive DSA Checklist (AlgoMaster 300+ Problems)
+// Module 1: Simplified Checklist - Just pattern categories, no validations
 const module1Checklist: ChecklistItem[] = [
   // Arrays & Strings
-  createChecklistItem('m1-arrays-c1', 'Complete all Arrays pattern problems (10 problems)', 'module-1', 'Arrays', [], false, 300),
-  createChecklistItem('m1-arrays-v1', 'Validate: Solve Product of Array Except Self in 20 min', 'module-1', 'Arrays', [], true),
-  createChecklistItem('m1-strings-c1', 'Complete all Strings pattern problems (6 problems)', 'module-1', 'Strings', [], false, 180),
-  createChecklistItem('m1-strings-v1', 'Validate: Implement valid palindrome with two pointers', 'module-1', 'Strings', [], true),
+  createChecklistItem('m1-arrays', 'Arrays - 10 problems', 'module-1', 'Arrays & Strings', [], false, 300),
+  createChecklistItem('m1-strings', 'Strings - 6 problems', 'module-1', 'Arrays & Strings', [], false, 180),
   
   // Bit Manipulation
-  createChecklistItem('m1-bit-c1', 'Complete all Bit Manipulation problems (7 problems)', 'module-1', 'Bit Manipulation', [], false, 210),
-  createChecklistItem('m1-bit-v1', 'Validate: Explain XOR operation and use cases', 'module-1', 'Bit Manipulation', [], true),
+  createChecklistItem('m1-bit', 'Bit Manipulation - 7 problems', 'module-1', 'Bit Manipulation', [], false, 210),
   
   // Hash Tables
-  createChecklistItem('m1-hash-c1', 'Complete all Hash Tables problems (13 problems)', 'module-1', 'Hash Tables', [], false, 390),
-  createChecklistItem('m1-hash-v1', 'Validate: Design a HashMap from scratch', 'module-1', 'Hash Tables', [], true),
+  createChecklistItem('m1-hash', 'Hash Tables - 13 problems', 'module-1', 'Hash Tables', [], false, 390),
   
   // Two Pointers
-  createChecklistItem('m1-tp-c1', 'Complete all Two Pointers problems (5 problems)', 'module-1', 'Two Pointers', [], false, 150),
-  createChecklistItem('m1-tp-v1', 'Validate: Solve 3Sum in 15 minutes without hints', 'module-1', 'Two Pointers', [], true),
+  createChecklistItem('m1-tp', 'Two Pointers - 5 problems', 'module-1', 'Two Pointers', [], false, 150),
   
   // Prefix Sum
-  createChecklistItem('m1-ps-c1', 'Complete all Prefix Sum problems (5 problems)', 'module-1', 'Prefix Sum', [], false, 150),
-  createChecklistItem('m1-ps-v1', 'Validate: Solve Subarray Sum Equals K with hashmap', 'module-1', 'Prefix Sum', [], true),
+  createChecklistItem('m1-ps', 'Prefix Sum - 5 problems', 'module-1', 'Prefix Sum', [], false, 150),
   
   // Sliding Window
-  createChecklistItem('m1-sw-c1', 'Complete all Sliding Window Fixed Size problems (5 problems)', 'module-1', 'Sliding Window', [], false, 150),
-  createChecklistItem('m1-sw-c2', 'Complete all Sliding Window Dynamic Size problems (5 problems)', 'module-1', 'Sliding Window', [], false, 200),
-  createChecklistItem('m1-sw-v1', 'Validate: Implement sliding window template from scratch', 'module-1', 'Sliding Window', [], true),
+  createChecklistItem('m1-sw-fixed', 'Sliding Window Fixed Size - 5 problems', 'module-1', 'Sliding Window', [], false, 150),
+  createChecklistItem('m1-sw-dynamic', 'Sliding Window Dynamic Size - 5 problems', 'module-1', 'Sliding Window', [], false, 200),
   
   // Kadane's Algorithm
-  createChecklistItem('m1-kadane-c1', 'Complete all Kadane\'s Algorithm problems (4 problems)', 'module-1', "Kadane's Algorithm", [], false, 120),
-  createChecklistItem('m1-kadane-v1', 'Validate: Solve Maximum Subarray with O(N) solution', 'module-1', "Kadane's Algorithm", [], true),
+  createChecklistItem('m1-kadane', "Kadane's Algorithm - 4 problems", 'module-1', "Kadane's Algorithm", [], false, 120),
   
   // Matrix
-  createChecklistItem('m1-matrix-c1', 'Complete all Matrix problems (5 problems)', 'module-1', 'Matrix', [], false, 150),
-  createChecklistItem('m1-matrix-v1', 'Validate: Implement spiral matrix traversal', 'module-1', 'Matrix', [], true),
+  createChecklistItem('m1-matrix', 'Matrix (2D Array) - 5 problems', 'module-1', 'Matrix', [], false, 150),
   
   // Linked List
-  createChecklistItem('m1-ll-c1', 'Complete all Linked List problems (10 problems)', 'module-1', 'Linked List', [], false, 300),
-  createChecklistItem('m1-ll-c2', 'Complete all Linked List In-place Reversal problems (4 problems)', 'module-1', 'Linked List', [], false, 120),
-  createChecklistItem('m1-ll-v1', 'Validate: Reverse linked list iteratively and recursively', 'module-1', 'Linked List', [], true),
+  createChecklistItem('m1-ll', 'Linked List - 10 problems', 'module-1', 'Linked List', [], false, 300),
+  createChecklistItem('m1-ll-reversal', 'Linked List In-place Reversal - 4 problems', 'module-1', 'Linked List', [], false, 120),
   
   // Fast and Slow Pointers
-  createChecklistItem('m1-fsp-c1', 'Complete all Fast and Slow Pointers problems (3 problems)', 'module-1', 'Two Pointers', [], false, 90),
-  createChecklistItem('m1-fsp-v1', 'Validate: Detect cycle using Floyd\'s algorithm', 'module-1', 'Two Pointers', [], true),
+  createChecklistItem('m1-fsp', 'Fast and Slow Pointers - 3 problems', 'module-1', 'Two Pointers', [], false, 90),
   
   // Stacks
-  createChecklistItem('m1-stack-c1', 'Complete all Stacks problems (8 problems)', 'module-1', 'Stack', [], false, 240),
-  createChecklistItem('m1-stack-c2', 'Complete all Monotonic Stack problems (6 problems)', 'module-1', 'Monotonic Stack', [], false, 240),
-  createChecklistItem('m1-stack-v1', 'Validate: Explain why Monotonic Stack is O(N)', 'module-1', 'Stack', [], true),
+  createChecklistItem('m1-stack', 'Stacks - 8 problems', 'module-1', 'Stack', [], false, 240),
+  createChecklistItem('m1-monotonic-stack', 'Monotonic Stack - 6 problems', 'module-1', 'Monotonic Stack', [], false, 240),
   
   // Queues
-  createChecklistItem('m1-queue-c1', 'Complete all Queues problems (3 problems)', 'module-1', 'Queue', [], false, 90),
-  createChecklistItem('m1-queue-c2', 'Complete all Monotonic Queue problems (4 problems)', 'module-1', 'Monotonic Queue', [], false, 150),
+  createChecklistItem('m1-queue', 'Queues - 3 problems', 'module-1', 'Queue', [], false, 90),
+  createChecklistItem('m1-monotonic-queue', 'Monotonic Queue - 4 problems', 'module-1', 'Monotonic Queue', [], false, 150),
   
   // Bucket Sort
-  createChecklistItem('m1-bucket-c1', 'Complete all Bucket Sort problems (3 problems)', 'module-1', 'Bucket Sort', [], false, 90),
+  createChecklistItem('m1-bucket', 'Bucket Sort - 3 problems', 'module-1', 'Bucket Sort', [], false, 90),
   
   // Binary Search
-  createChecklistItem('m1-bs-c1', 'Complete all Binary Search problems (9 problems)', 'module-1', 'Binary Search', [], false, 270),
-  createChecklistItem('m1-bs-v1', 'Validate: Write Binary Search template from scratch', 'module-1', 'Binary Search', [], true),
+  createChecklistItem('m1-bs', 'Binary Search - 9 problems', 'module-1', 'Binary Search', [], false, 270),
   
   // Binary Tree
-  createChecklistItem('m1-tree-c1', 'Complete all Binary Tree problems (13 problems)', 'module-1', 'Trees', [], false, 390),
-  createChecklistItem('m1-tree-v1', 'Validate: Implement DFS and BFS traversals', 'module-1', 'Trees', [], true),
+  createChecklistItem('m1-tree', 'Binary Tree - 13 problems', 'module-1', 'Trees', [], false, 390),
   
   // Graph
-  createChecklistItem('m1-graph-c1', 'Complete all Graph problems (11 problems)', 'module-1', 'Graphs', [], false, 330),
-  createChecklistItem('m1-graph-v1', 'Validate: Implement Union Find with Path Compression', 'module-1', 'Graphs', [], true),
+  createChecklistItem('m1-graph', 'Graph - 11 problems', 'module-1', 'Graphs', [], false, 330),
   
   // Backtracking
-  createChecklistItem('m1-bt-c1', 'Complete all Backtracking problems (11 problems)', 'module-1', 'Backtracking', [], false, 330),
-  createChecklistItem('m1-bt-v1', 'Validate: Draw recursion tree for Permutations', 'module-1', 'Backtracking', [], true),
+  createChecklistItem('m1-bt', 'Backtracking - 11 problems', 'module-1', 'Backtracking', [], false, 330),
   
   // Dynamic Programming
-  createChecklistItem('m1-dp-c1', 'Complete all Dynamic Programming problems (18 problems)', 'module-1', 'Dynamic Programming', [], false, 540),
-  createChecklistItem('m1-dp-v1', 'Validate: Write recurrence relation for Coin Change', 'module-1', 'Dynamic Programming', [], true),
+  createChecklistItem('m1-dp', 'Dynamic Programming - 18 problems', 'module-1', 'Dynamic Programming', [], false, 540),
   
   // Heap
-  createChecklistItem('m1-heap-c1', 'Complete all Heap/Priority Queue problems (6 problems)', 'module-1', 'Heap', [], false, 180),
-  createChecklistItem('m1-heap-v1', 'Validate: Implement Heap Sort from scratch', 'module-1', 'Heap', [], true),
+  createChecklistItem('m1-heap', 'Heap/Priority Queue - 6 problems', 'module-1', 'Heap', [], false, 180),
   
   // Trie
-  createChecklistItem('m1-trie-c1', 'Complete all Trie problems (4 problems)', 'module-1', 'Trie', [], false, 120),
-  createChecklistItem('m1-trie-v1', 'Validate: Write TrieNode class with insert and search', 'module-1', 'Trie', [], true),
+  createChecklistItem('m1-trie', 'Trie - 4 problems', 'module-1', 'Trie', [], false, 120),
   
   // Union Find
-  createChecklistItem('m1-uf-c1', 'Complete all Union Find problems (5 problems)', 'module-1', 'Union Find', [], false, 150),
+  createChecklistItem('m1-uf', 'Union Find - 5 problems', 'module-1', 'Union Find', [], false, 150),
   
   // Topological Sort
-  createChecklistItem('m1-ts-c1', 'Complete all Topological Sort problems (3 problems)', 'module-1', 'Topological Sort', [], false, 90),
+  createChecklistItem('m1-ts', 'Topological Sort - 3 problems', 'module-1', 'Topological Sort', [], false, 90),
   
   // Design
-  createChecklistItem('m1-design-c1', 'Complete all Design problems (8 problems)', 'module-1', 'Design', [], false, 240),
+  createChecklistItem('m1-design', 'Design - 8 problems', 'module-1', 'Design', [], false, 240),
   
   // Intervals
-  createChecklistItem('m1-intervals-c1', 'Complete all Intervals problems (6 problems)', 'module-1', 'Intervals', [], false, 180),
+  createChecklistItem('m1-intervals', 'Intervals - 6 problems', 'module-1', 'Intervals', [], false, 180),
   
   // Greedy
-  createChecklistItem('m1-greedy-c1', 'Complete all Greedy problems (7 problems)', 'module-1', 'Greedy', [], false, 210),
+  createChecklistItem('m1-greedy', 'Greedy - 7 problems', 'module-1', 'Greedy', [], false, 210),
   
   // Recursion
-  createChecklistItem('m1-recursion-c1', 'Complete all Recursion problems (5 problems)', 'module-1', 'Recursion', [], false, 150),
+  createChecklistItem('m1-recursion', 'Recursion - 5 problems', 'module-1', 'Recursion', [], false, 150),
   
   // Math & Geometry
-  createChecklistItem('m1-math-c1', 'Complete all Math & Geometry problems (6 problems)', 'module-1', 'Math', [], false, 180),
+  createChecklistItem('m1-math', 'Math & Geometry - 6 problems', 'module-1', 'Math', [], false, 180),
   
   // Advanced Data Structures
-  createChecklistItem('m1-segment-c1', 'Complete all Segment Tree problems (4 problems)', 'module-1', 'Segment Tree', [], false, 200),
-  createChecklistItem('m1-bitree-c1', 'Complete all Binary Indexed Tree problems (3 problems)', 'module-1', 'Binary Indexed Tree', [], false, 180),
-  
-  // Module 1 Final Checkpoint
-  createChecklistItem('m1-checkpoint-1', 'Checkpoint 1: Solve 3 Medium problems in 45 min (Random)', 'module-1', 'Checkpoint', [], true, 45),
-  createChecklistItem('m1-checkpoint-2', 'Checkpoint 2: Solve 2 Hard problems in 60 min (Random)', 'module-1', 'Checkpoint', [], true, 60),
-  createChecklistItem('m1-checkpoint-3', 'FINAL CHECKPOINT: Solve 5 problems (1 Easy, 3 Medium, 1 Hard) in 90 min', 'module-1', 'Checkpoint', [], true, 90),
+  createChecklistItem('m1-segment', 'Segment Tree - 4 problems', 'module-1', 'Segment Tree', [], false, 200),
+  createChecklistItem('m1-bitree', 'Binary Indexed Tree - 3 problems', 'module-1', 'Binary Indexed Tree', [], false, 180),
 ];
 
 // Module 2: LLD Mastery

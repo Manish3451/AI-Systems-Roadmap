@@ -29,6 +29,7 @@ import { ProgressDashboard } from '@/components/visualization/ProgressDashboard'
 import { ModuleHeader } from '@/components/modules/ModuleHeader';
 import { ChecklistSection } from '@/components/modules/ChecklistSection';
 import { ResourceHub } from '@/components/modules/ResourceHub';
+import { DSAProblems } from '@/components/modules/DSAProblems';
 import { ProjectsPage } from '@/components/projects';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
@@ -421,24 +422,30 @@ function App() {
                   <ModuleHeader 
                     module={selectedModule}
                     onStart={() => {
-                      // Scroll to checklist
-                      document.getElementById('checklist')?.scrollIntoView({ behavior: 'smooth' });
+                      // Scroll to content
+                      document.getElementById('module-content')?.scrollIntoView({ behavior: 'smooth' });
                     }}
                   />
                   
-                  {/* Tabs for Checklist and Resources */}
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    <div className="lg:col-span-2" id="checklist">
-                      <div className="flex items-center gap-2 mb-4">
-                        <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                        <h2 className="text-xl font-semibold text-slate-100">Checklist</h2>
-                      </div>
-                      <ChecklistSection
-                        items={selectedModule.checklist}
-                        resources={selectedModule.resources}
-                        moduleId={selectedModule.id}
-                      />
-                    </div>
+                  {/* Module Content */}
+                  <div id="module-content">
+                    {selectedModule.id === 'module-1' ? (
+                      // DSA Module - Show Problems List
+                      <DSAProblems moduleId={selectedModule.id} />
+                    ) : (
+                      // Other Modules - Show Checklist
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div className="lg:col-span-2" id="checklist">
+                          <div className="flex items-center gap-2 mb-4">
+                            <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                            <h2 className="text-xl font-semibold text-slate-100">Checklist</h2>
+                          </div>
+                          <ChecklistSection
+                            items={selectedModule.checklist}
+                            resources={selectedModule.resources}
+                            moduleId={selectedModule.id}
+                          />
+                        </div>
                     
                     <div>
                       <div className="flex items-center gap-2 mb-4">
@@ -495,8 +502,10 @@ function App() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
-              )}
+                )}
+              </div>
+            </motion.div>
+          )}
               
               {/* Progress View */}
               {currentView === 'progress' && (
