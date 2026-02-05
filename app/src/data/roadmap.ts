@@ -1,4 +1,5 @@
 import type { Module, Resource, ChecklistItem, DSAPattern } from '@/types';
+import { allDSAPatterns, generateDSAResources, dsaStats, totalDSAProblems } from './dsaPatterns';
 
 // Helper function to create resource
 const createResource = (
@@ -58,425 +59,127 @@ const module0Checklist: ChecklistItem[] = [
   createChecklistItem('m0-c6', 'STOP CONDITION: Solve 3 Easy array problems using the framework without looking up solutions', 'module-0', 'Checkpoint', [], true, 180),
 ];
 
-// Module 1: Pattern-Based DSA Mastery
-const dsaPatterns: DSAPattern[] = [
-  {
-    id: 'sw',
-    name: 'Sliding Window',
-    moduleId: 'module-1',
-    timeBudget: 3,
-    isCompleted: false,
-    problems: [
-      { problemId: 'lc121', title: 'Best Time to Buy/Sell Stock', difficulty: 'Easy', pattern: 'Sliding Window', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc3', title: 'Longest Substring Without Repeating', difficulty: 'Medium', pattern: 'Sliding Window', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc76', title: 'Minimum Window Substring', difficulty: 'Hard', pattern: 'Sliding Window', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc209', title: 'Minimum Size Subarray Sum', difficulty: 'Medium', pattern: 'Sliding Window', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc567', title: 'Permutation in String', difficulty: 'Medium', pattern: 'Sliding Window', isCompleted: false, moduleId: 'module-1' },
-    ],
-  },
-  {
-    id: 'tp',
-    name: 'Two Pointers',
-    moduleId: 'module-1',
-    timeBudget: 2,
-    isCompleted: false,
-    problems: [
-      { problemId: 'lc167', title: 'Two Sum II', difficulty: 'Easy', pattern: 'Two Pointers', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc15', title: '3Sum', difficulty: 'Medium', pattern: 'Two Pointers', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc11', title: 'Container With Most Water', difficulty: 'Medium', pattern: 'Two Pointers', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc26', title: 'Remove Duplicates', difficulty: 'Easy', pattern: 'Two Pointers', isCompleted: false, moduleId: 'module-1' },
-    ],
-  },
-  {
-    id: 'ps',
-    name: 'Prefix Sum',
-    moduleId: 'module-1',
-    timeBudget: 1,
-    isCompleted: false,
-    problems: [
-      { problemId: 'lc238', title: 'Product of Array Except Self', difficulty: 'Medium', pattern: 'Prefix Sum', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc560', title: 'Subarray Sum Equals K', difficulty: 'Medium', pattern: 'Prefix Sum', isCompleted: false, moduleId: 'module-1' },
-    ],
-  },
-  {
-    id: 'bs',
-    name: 'Binary Search',
-    moduleId: 'module-1',
-    timeBudget: 3,
-    isCompleted: false,
-    problems: [
-      { problemId: 'lc704', title: 'Binary Search', difficulty: 'Easy', pattern: 'Binary Search', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc33', title: 'Search in Rotated Sorted Array', difficulty: 'Medium', pattern: 'Binary Search', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc153', title: 'Find Minimum in Rotated Sorted Array', difficulty: 'Medium', pattern: 'Binary Search', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc875', title: 'Koko Eating Bananas', difficulty: 'Medium', pattern: 'Binary Search', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc1011', title: 'Capacity To Ship Packages', difficulty: 'Medium', pattern: 'Binary Search', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc410', title: 'Split Array Largest Sum', difficulty: 'Hard', pattern: 'Binary Search', isCompleted: false, moduleId: 'module-1' },
-    ],
-  },
-  {
-    id: 'll',
-    name: 'Linked List',
-    moduleId: 'module-1',
-    timeBudget: 2,
-    isCompleted: false,
-    problems: [
-      { problemId: 'lc206', title: 'Reverse Linked List', difficulty: 'Easy', pattern: 'Linked List', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc141', title: 'Linked List Cycle', difficulty: 'Easy', pattern: 'Linked List', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc142', title: 'Linked List Cycle II', difficulty: 'Medium', pattern: 'Linked List', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc19', title: 'Remove Nth Node From End', difficulty: 'Medium', pattern: 'Linked List', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc21', title: 'Merge Two Sorted Lists', difficulty: 'Easy', pattern: 'Linked List', isCompleted: false, moduleId: 'module-1' },
-    ],
-  },
-  {
-    id: 'stack',
-    name: 'Stack & Monotonic Stack',
-    moduleId: 'module-1',
-    timeBudget: 2,
-    isCompleted: false,
-    problems: [
-      { problemId: 'lc20', title: 'Valid Parentheses', difficulty: 'Easy', pattern: 'Stack', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc739', title: 'Daily Temperatures', difficulty: 'Medium', pattern: 'Monotonic Stack', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc84', title: 'Largest Rectangle in Histogram', difficulty: 'Hard', pattern: 'Monotonic Stack', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc155', title: 'Min Stack', difficulty: 'Medium', pattern: 'Stack', isCompleted: false, moduleId: 'module-1' },
-    ],
-  },
-  {
-    id: 'tree',
-    name: 'Binary Trees (DFS/BFS)',
-    moduleId: 'module-1',
-    timeBudget: 4,
-    isCompleted: false,
-    problems: [
-      { problemId: 'lc104', title: 'Maximum Depth', difficulty: 'Easy', pattern: 'Tree', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc543', title: 'Diameter of Binary Tree', difficulty: 'Easy', pattern: 'Tree', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc124', title: 'Binary Tree Maximum Path Sum', difficulty: 'Hard', pattern: 'Tree', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc226', title: 'Invert Binary Tree', difficulty: 'Easy', pattern: 'Tree', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc102', title: 'Binary Tree Level Order Traversal', difficulty: 'Medium', pattern: 'Tree', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc199', title: 'Binary Tree Right Side View', difficulty: 'Medium', pattern: 'Tree', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc98', title: 'Validate Binary Search Tree', difficulty: 'Medium', pattern: 'Tree', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc235', title: 'Lowest Common Ancestor of BST', difficulty: 'Medium', pattern: 'Tree', isCompleted: false, moduleId: 'module-1' },
-    ],
-  },
-  {
-    id: 'graph',
-    name: 'Graphs (BFS/DFS/Union Find)',
-    moduleId: 'module-1',
-    timeBudget: 5,
-    isCompleted: false,
-    problems: [
-      { problemId: 'lc200', title: 'Number of Islands', difficulty: 'Medium', pattern: 'Graph', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc133', title: 'Clone Graph', difficulty: 'Medium', pattern: 'Graph', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc417', title: 'Pacific Atlantic Water Flow', difficulty: 'Medium', pattern: 'Graph', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc207', title: 'Course Schedule', difficulty: 'Medium', pattern: 'Graph', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc210', title: 'Course Schedule II', difficulty: 'Medium', pattern: 'Graph', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc323', title: 'Number of Connected Components', difficulty: 'Medium', pattern: 'Graph', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc547', title: 'Number of Provinces', difficulty: 'Medium', pattern: 'Graph', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc684', title: 'Redundant Connection', difficulty: 'Medium', pattern: 'Graph', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc127', title: 'Word Ladder', difficulty: 'Hard', pattern: 'Graph', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc269', title: 'Alien Dictionary', difficulty: 'Hard', pattern: 'Graph', isCompleted: false, moduleId: 'module-1' },
-    ],
-  },
-  {
-    id: 'bt',
-    name: 'Backtracking',
-    moduleId: 'module-1',
-    timeBudget: 3,
-    isCompleted: false,
-    problems: [
-      { problemId: 'lc46', title: 'Permutations', difficulty: 'Medium', pattern: 'Backtracking', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc78', title: 'Subsets', difficulty: 'Medium', pattern: 'Backtracking', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc51', title: 'N-Queens', difficulty: 'Hard', pattern: 'Backtracking', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc37', title: 'Sudoku Solver', difficulty: 'Hard', pattern: 'Backtracking', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc79', title: 'Word Search', difficulty: 'Medium', pattern: 'Backtracking', isCompleted: false, moduleId: 'module-1' },
-    ],
-  },
-  {
-    id: 'dp',
-    name: 'Dynamic Programming',
-    moduleId: 'module-1',
-    timeBudget: 7,
-    isCompleted: false,
-    problems: [
-      { problemId: 'lc70', title: 'Climbing Stairs', difficulty: 'Easy', pattern: 'DP', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc198', title: 'House Robber', difficulty: 'Medium', pattern: 'DP', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc322', title: 'Coin Change', difficulty: 'Medium', pattern: 'DP', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc1143', title: 'Longest Common Subsequence', difficulty: 'Medium', pattern: 'DP', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc72', title: 'Edit Distance', difficulty: 'Hard', pattern: 'DP', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc5', title: 'Longest Palindromic Substring', difficulty: 'Medium', pattern: 'DP', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc62', title: 'Unique Paths', difficulty: 'Medium', pattern: 'DP', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc64', title: 'Minimum Path Sum', difficulty: 'Medium', pattern: 'DP', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc416', title: 'Partition Equal Subset Sum', difficulty: 'Medium', pattern: 'DP', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc494', title: 'Target Sum', difficulty: 'Medium', pattern: 'DP', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc337', title: 'House Robber III', difficulty: 'Medium', pattern: 'DP', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc123', title: 'Best Time to Buy/Sell Stock III', difficulty: 'Hard', pattern: 'DP', isCompleted: false, moduleId: 'module-1' },
-    ],
-  },
-  {
-    id: 'heap',
-    name: 'Heap/Priority Queue',
-    moduleId: 'module-1',
-    timeBudget: 2,
-    isCompleted: false,
-    problems: [
-      { problemId: 'lc215', title: 'Kth Largest Element', difficulty: 'Medium', pattern: 'Heap', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc295', title: 'Find Median from Data Stream', difficulty: 'Hard', pattern: 'Heap', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc253', title: 'Meeting Rooms II', difficulty: 'Medium', pattern: 'Heap', isCompleted: false, moduleId: 'module-1' },
-    ],
-  },
-  {
-    id: 'trie',
-    name: 'Trie',
-    moduleId: 'module-1',
-    timeBudget: 2,
-    isCompleted: false,
-    problems: [
-      { problemId: 'lc208', title: 'Implement Trie', difficulty: 'Medium', pattern: 'Trie', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc212', title: 'Word Search II', difficulty: 'Hard', pattern: 'Trie', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc1268', title: 'Search Suggestions System', difficulty: 'Medium', pattern: 'Trie', isCompleted: false, moduleId: 'module-1' },
-    ],
-  },
-  {
-    id: 'composite',
-    name: 'Composite Patterns (Hard)',
-    moduleId: 'module-1',
-    timeBudget: 5,
-    isCompleted: false,
-    problems: [
-      { problemId: 'lc480', title: 'Sliding Window Median', difficulty: 'Hard', pattern: 'Composite', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc315', title: 'Count of Smaller Numbers After Self', difficulty: 'Hard', pattern: 'Composite', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc23', title: 'Merge K Sorted Lists', difficulty: 'Hard', pattern: 'Composite', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc854', title: 'K-Similar Strings', difficulty: 'Hard', pattern: 'Composite', isCompleted: false, moduleId: 'module-1' },
-      { problemId: 'lc329', title: 'Longest Increasing Path in Matrix', difficulty: 'Hard', pattern: 'Composite', isCompleted: false, moduleId: 'module-1' },
-    ],
-  },
-];
+// Module 1: Pattern-Based DSA Mastery (AlgoMaster 300+ Problems)
+const dsaPatterns: DSAPattern[] = allDSAPatterns;
 
-const module1Resources: Resource[] = [
-  // Sliding Window
-  createResource('m1-sw-r1', 'Sliding Window Algorithm Template', 'https://leetcode.com/problems/longest-substring-without-repeating-characters/discuss/2136465/template', 'article', 'module-1', 10),
-  createResource('m1-sw-r2', 'Sliding Window FIXED (NeetCode)', 'https://www.youtube.com/watch?v=MK-NZ4hN7rs', 'video', 'module-1', 8),
-  createResource('m1-sw-r3', 'LeetCode 121 - Best Time to Buy/Sell Stock', 'https://leetcode.com/problems/best-time-to-buy-and-sell-stock/', 'leetcode', 'module-1', 15, 'Easy', 'Sliding Window'),
-  createResource('m1-sw-r4', 'LeetCode 3 - Longest Substring Without Repeating', 'https://leetcode.com/problems/longest-substring-without-repeating-characters/', 'leetcode', 'module-1', 20, 'Medium', 'Sliding Window'),
-  createResource('m1-sw-r5', 'LeetCode 76 - Minimum Window Substring', 'https://leetcode.com/problems/minimum-window-substring/', 'leetcode', 'module-1', 30, 'Hard', 'Sliding Window'),
-  createResource('m1-sw-r6', 'LeetCode 209 - Minimum Size Subarray Sum', 'https://leetcode.com/problems/minimum-size-subarray-sum/', 'leetcode', 'module-1', 20, 'Medium', 'Sliding Window'),
-  createResource('m1-sw-r7', 'LeetCode 567 - Permutation in String', 'https://leetcode.com/problems/permutation-in-string/', 'leetcode', 'module-1', 20, 'Medium', 'Sliding Window'),
-  // Two Pointers
-  createResource('m1-tp-r1', 'Two Pointers Technique', 'https://www.geeksforgeeks.org/two-pointers-technique/', 'article', 'module-1', 8),
-  createResource('m1-tp-r2', 'Hashing vs Two Pointers', 'https://www.interviewcake.com/article/hash-map-two-pointer', 'article', 'module-1', 5),
-  createResource('m1-tp-r3', 'LeetCode 167 - Two Sum II', 'https://leetcode.com/problems/two-sum-ii-input-array-is-sorted/', 'leetcode', 'module-1', 15, 'Easy', 'Two Pointers'),
-  createResource('m1-tp-r4', 'LeetCode 15 - 3Sum', 'https://leetcode.com/problems/3sum/', 'leetcode', 'module-1', 25, 'Medium', 'Two Pointers'),
-  createResource('m1-tp-r5', 'LeetCode 11 - Container With Most Water', 'https://leetcode.com/problems/container-with-most-water/', 'leetcode', 'module-1', 20, 'Medium', 'Two Pointers'),
-  createResource('m1-tp-r6', 'LeetCode 26 - Remove Duplicates', 'https://leetcode.com/problems/remove-duplicates-from-sorted-array/', 'leetcode', 'module-1', 15, 'Easy', 'Two Pointers'),
-  // Prefix Sum
-  createResource('m1-ps-r1', 'Prefix Sum Array', 'https://www.hackerearth.com/practice/data-structures/arrays/1-d/tutorial/', 'article', 'module-1', 15),
-  createResource('m1-ps-r2', 'LeetCode 238 - Product of Array Except Self', 'https://leetcode.com/problems/product-of-array-except-self/', 'leetcode', 'module-1', 20, 'Medium', 'Prefix Sum'),
-  createResource('m1-ps-r3', 'LeetCode 560 - Subarray Sum Equals K', 'https://leetcode.com/problems/subarray-sum-equals-k/', 'leetcode', 'module-1', 25, 'Medium', 'Prefix Sum'),
-  // Binary Search
-  createResource('m1-bs-r1', 'Binary Search Template', 'https://leetcode.com/discuss/general-discussion/786126/python-powerful-ultimate-binary-search-template-solved-many-problems', 'article', 'module-1', 15),
-  createResource('m1-bs-r2', 'Binary Search on Answer', 'https://usaco.guide/silver/binary-search?lang=py', 'article', 'module-1', 20),
-  createResource('m1-bs-r3', 'LeetCode 704 - Binary Search', 'https://leetcode.com/problems/binary-search/', 'leetcode', 'module-1', 15, 'Easy', 'Binary Search'),
-  createResource('m1-bs-r4', 'LeetCode 33 - Search in Rotated Sorted Array', 'https://leetcode.com/problems/search-in-rotated-sorted-array/', 'leetcode', 'module-1', 25, 'Medium', 'Binary Search'),
-  createResource('m1-bs-r5', 'LeetCode 153 - Find Minimum in Rotated Sorted Array', 'https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/', 'leetcode', 'module-1', 20, 'Medium', 'Binary Search'),
-  createResource('m1-bs-r6', 'LeetCode 875 - Koko Eating Bananas', 'https://leetcode.com/problems/koko-eating-bananas/', 'leetcode', 'module-1', 25, 'Medium', 'Binary Search'),
-  createResource('m1-bs-r7', 'LeetCode 1011 - Capacity To Ship Packages', 'https://leetcode.com/problems/capacity-to-ship-packages-within-d-days/', 'leetcode', 'module-1', 25, 'Medium', 'Binary Search'),
-  createResource('m1-bs-r8', 'LeetCode 410 - Split Array Largest Sum', 'https://leetcode.com/problems/split-array-largest-sum/', 'leetcode', 'module-1', 30, 'Hard', 'Binary Search'),
-  // Linked List
-  createResource('m1-ll-r1', 'Linked List Patterns', 'https://medium.com/leetcode-patterns/linked-list-patterns-d0b005170ede', 'article', 'module-1', 12),
-  createResource('m1-ll-r2', 'VisuAlgo Linked List', 'https://visualgo.net/en/list', 'doc', 'module-1', 10),
-  createResource('m1-ll-r3', 'LeetCode 206 - Reverse Linked List', 'https://leetcode.com/problems/reverse-linked-list/', 'leetcode', 'module-1', 15, 'Easy', 'Linked List'),
-  createResource('m1-ll-r4', 'LeetCode 141 - Linked List Cycle', 'https://leetcode.com/problems/linked-list-cycle/', 'leetcode', 'module-1', 15, 'Easy', 'Linked List'),
-  createResource('m1-ll-r5', 'LeetCode 142 - Linked List Cycle II', 'https://leetcode.com/problems/linked-list-cycle-ii/', 'leetcode', 'module-1', 20, 'Medium', 'Linked List'),
-  createResource('m1-ll-r6', 'LeetCode 19 - Remove Nth Node From End', 'https://leetcode.com/problems/remove-nth-node-from-end-of-list/', 'leetcode', 'module-1', 20, 'Medium', 'Linked List'),
-  createResource('m1-ll-r7', 'LeetCode 21 - Merge Two Sorted Lists', 'https://leetcode.com/problems/merge-two-sorted-lists/', 'leetcode', 'module-1', 15, 'Easy', 'Linked List'),
-  // Stack
-  createResource('m1-stack-r1', 'Monotonic Stack Explained', 'https://liyin2015.medium.com/monotonic-stack-survey-7d0a684af8b3', 'article', 'module-1', 10),
-  createResource('m1-stack-r2', 'LeetCode 20 - Valid Parentheses', 'https://leetcode.com/problems/valid-parentheses/', 'leetcode', 'module-1', 15, 'Easy', 'Stack'),
-  createResource('m1-stack-r3', 'LeetCode 739 - Daily Temperatures', 'https://leetcode.com/problems/daily-temperatures/', 'leetcode', 'module-1', 20, 'Medium', 'Monotonic Stack'),
-  createResource('m1-stack-r4', 'LeetCode 84 - Largest Rectangle in Histogram', 'https://leetcode.com/problems/largest-rectangle-in-histogram/', 'leetcode', 'module-1', 30, 'Hard', 'Monotonic Stack'),
-  createResource('m1-stack-r5', 'LeetCode 155 - Min Stack', 'https://leetcode.com/problems/min-stack/', 'leetcode', 'module-1', 20, 'Medium', 'Stack'),
-  // Trees
-  createResource('m1-tree-r1', 'DFS & BFS Tree Traversal', 'https://www.khanacademy.org/computing/computer-science/algorithms/breadth-first-search/a/breadth-first-search-and-its-uses', 'article', 'module-1', 20),
-  createResource('m1-tree-r2', 'Tree Patterns', 'https://seanprashad.com/leetcode-patterns/', 'article', 'module-1', 15),
-  createResource('m1-tree-r3', 'LeetCode 104 - Maximum Depth', 'https://leetcode.com/problems/maximum-depth-of-binary-tree/', 'leetcode', 'module-1', 10, 'Easy', 'Tree'),
-  createResource('m1-tree-r4', 'LeetCode 543 - Diameter of Binary Tree', 'https://leetcode.com/problems/diameter-of-binary-tree/', 'leetcode', 'module-1', 15, 'Easy', 'Tree'),
-  createResource('m1-tree-r5', 'LeetCode 124 - Binary Tree Maximum Path Sum', 'https://leetcode.com/problems/binary-tree-maximum-path-sum/', 'leetcode', 'module-1', 30, 'Hard', 'Tree'),
-  createResource('m1-tree-r6', 'LeetCode 226 - Invert Binary Tree', 'https://leetcode.com/problems/invert-binary-tree/', 'leetcode', 'module-1', 10, 'Easy', 'Tree'),
-  createResource('m1-tree-r7', 'LeetCode 102 - Binary Tree Level Order Traversal', 'https://leetcode.com/problems/binary-tree-level-order-traversal/', 'leetcode', 'module-1', 20, 'Medium', 'Tree'),
-  createResource('m1-tree-r8', 'LeetCode 199 - Binary Tree Right Side View', 'https://leetcode.com/problems/binary-tree-right-side-view/', 'leetcode', 'module-1', 20, 'Medium', 'Tree'),
-  createResource('m1-tree-r9', 'LeetCode 98 - Validate Binary Search Tree', 'https://leetcode.com/problems/validate-binary-search-tree/', 'leetcode', 'module-1', 20, 'Medium', 'Tree'),
-  createResource('m1-tree-r10', 'LeetCode 235 - Lowest Common Ancestor of BST', 'https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-search-tree/', 'leetcode', 'module-1', 20, 'Medium', 'Tree'),
-  // Graphs
-  createResource('m1-graph-r1', 'Graph Algorithms', 'https://www.programiz.com/dsa/graph', 'article', 'module-1', 20),
-  createResource('m1-graph-r2', 'Union Find', 'https://www.hackerearth.com/practice/data-structures/disjoint-data-structures/basics-of-disjoint-data-structures/tutorial/', 'article', 'module-1', 15),
-  createResource('m1-graph-r3', 'LeetCode 200 - Number of Islands', 'https://leetcode.com/problems/number-of-islands/', 'leetcode', 'module-1', 25, 'Medium', 'Graph'),
-  createResource('m1-graph-r4', 'LeetCode 133 - Clone Graph', 'https://leetcode.com/problems/clone-graph/', 'leetcode', 'module-1', 20, 'Medium', 'Graph'),
-  createResource('m1-graph-r5', 'LeetCode 417 - Pacific Atlantic Water Flow', 'https://leetcode.com/problems/pacific-atlantic-water-flow/', 'leetcode', 'module-1', 25, 'Medium', 'Graph'),
-  createResource('m1-graph-r6', 'LeetCode 207 - Course Schedule', 'https://leetcode.com/problems/course-schedule/', 'leetcode', 'module-1', 25, 'Medium', 'Graph'),
-  createResource('m1-graph-r7', 'LeetCode 210 - Course Schedule II', 'https://leetcode.com/problems/course-schedule-ii/', 'leetcode', 'module-1', 25, 'Medium', 'Graph'),
-  createResource('m1-graph-r8', 'LeetCode 323 - Number of Connected Components', 'https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/', 'leetcode', 'module-1', 20, 'Medium', 'Graph'),
-  createResource('m1-graph-r9', 'LeetCode 547 - Number of Provinces', 'https://leetcode.com/problems/number-of-provinces/', 'leetcode', 'module-1', 20, 'Medium', 'Graph'),
-  createResource('m1-graph-r10', 'LeetCode 684 - Redundant Connection', 'https://leetcode.com/problems/redundant-connection/', 'leetcode', 'module-1', 25, 'Medium', 'Graph'),
-  createResource('m1-graph-r11', 'LeetCode 127 - Word Ladder', 'https://leetcode.com/problems/word-ladder/', 'leetcode', 'module-1', 35, 'Hard', 'Graph'),
-  createResource('m1-graph-r12', 'LeetCode 269 - Alien Dictionary', 'https://leetcode.com/problems/alien-dictionary/', 'leetcode', 'module-1', 35, 'Hard', 'Graph'),
-  // Backtracking
-  createResource('m1-bt-r1', 'Backtracking Template', 'https://leetcode.com/problems/subsets/discuss/27288/python-solution-with-detailed-explanation', 'article', 'module-1', 15),
-  createResource('m1-bt-r2', 'LeetCode 46 - Permutations', 'https://leetcode.com/problems/permutations/', 'leetcode', 'module-1', 20, 'Medium', 'Backtracking'),
-  createResource('m1-bt-r3', 'LeetCode 78 - Subsets', 'https://leetcode.com/problems/subsets/', 'leetcode', 'module-1', 20, 'Medium', 'Backtracking'),
-  createResource('m1-bt-r4', 'LeetCode 51 - N-Queens', 'https://leetcode.com/problems/n-queens/', 'leetcode', 'module-1', 35, 'Hard', 'Backtracking'),
-  createResource('m1-bt-r5', 'LeetCode 37 - Sudoku Solver', 'https://leetcode.com/problems/sudoku-solver/', 'leetcode', 'module-1', 35, 'Hard', 'Backtracking'),
-  createResource('m1-bt-r6', 'LeetCode 79 - Word Search', 'https://leetcode.com/problems/word-search/', 'leetcode', 'module-1', 25, 'Medium', 'Backtracking'),
-  // DP
-  createResource('m1-dp-r1', 'DP Patterns (NeetCode)', 'https://www.youtube.com/watch?v=aPQY__2H3tE', 'video', 'module-1', 60),
-  createResource('m1-dp-r2', 'DP 14 Patterns', 'https://leetcode.com/discuss/general-discussion/1062887/dynamic-programming-patterns', 'article', 'module-1', 20),
-  createResource('m1-dp-r3', 'LeetCode 70 - Climbing Stairs', 'https://leetcode.com/problems/climbing-stairs/', 'leetcode', 'module-1', 15, 'Easy', 'DP'),
-  createResource('m1-dp-r4', 'LeetCode 198 - House Robber', 'https://leetcode.com/problems/house-robber/', 'leetcode', 'module-1', 20, 'Medium', 'DP'),
-  createResource('m1-dp-r5', 'LeetCode 322 - Coin Change', 'https://leetcode.com/problems/coin-change/', 'leetcode', 'module-1', 25, 'Medium', 'DP'),
-  createResource('m1-dp-r6', 'LeetCode 1143 - Longest Common Subsequence', 'https://leetcode.com/problems/longest-common-subsequence/', 'leetcode', 'module-1', 25, 'Medium', 'DP'),
-  createResource('m1-dp-r7', 'LeetCode 72 - Edit Distance', 'https://leetcode.com/problems/edit-distance/', 'leetcode', 'module-1', 30, 'Hard', 'DP'),
-  createResource('m1-dp-r8', 'LeetCode 5 - Longest Palindromic Substring', 'https://leetcode.com/problems/longest-palindromic-substring/', 'leetcode', 'module-1', 25, 'Medium', 'DP'),
-  createResource('m1-dp-r9', 'LeetCode 62 - Unique Paths', 'https://leetcode.com/problems/unique-paths/', 'leetcode', 'module-1', 20, 'Medium', 'DP'),
-  createResource('m1-dp-r10', 'LeetCode 64 - Minimum Path Sum', 'https://leetcode.com/problems/minimum-path-sum/', 'leetcode', 'module-1', 20, 'Medium', 'DP'),
-  createResource('m1-dp-r11', 'LeetCode 416 - Partition Equal Subset Sum', 'https://leetcode.com/problems/partition-equal-subset-sum/', 'leetcode', 'module-1', 25, 'Medium', 'DP'),
-  createResource('m1-dp-r12', 'LeetCode 494 - Target Sum', 'https://leetcode.com/problems/target-sum/', 'leetcode', 'module-1', 25, 'Medium', 'DP'),
-  createResource('m1-dp-r13', 'LeetCode 337 - House Robber III', 'https://leetcode.com/problems/house-robber-iii/', 'leetcode', 'module-1', 25, 'Medium', 'DP'),
-  createResource('m1-dp-r14', 'LeetCode 123 - Best Time to Buy/Sell Stock III', 'https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/', 'leetcode', 'module-1', 30, 'Hard', 'DP'),
-  // Heap
-  createResource('m1-heap-r1', 'Heaps in Python', 'https://realpython.com/python-heapq-module/', 'article', 'module-1', 10),
-  createResource('m1-heap-r2', 'LeetCode 215 - Kth Largest Element', 'https://leetcode.com/problems/kth-largest-element-in-an-array/', 'leetcode', 'module-1', 20, 'Medium', 'Heap'),
-  createResource('m1-heap-r3', 'LeetCode 295 - Find Median from Data Stream', 'https://leetcode.com/problems/find-median-from-data-stream/', 'leetcode', 'module-1', 30, 'Hard', 'Heap'),
-  createResource('m1-heap-r4', 'LeetCode 253 - Meeting Rooms II', 'https://leetcode.com/problems/meeting-rooms-ii/', 'leetcode', 'module-1', 20, 'Medium', 'Heap'),
-  // Trie
-  createResource('m1-trie-r1', 'Implement Trie', 'https://leetcode.com/problems/implement-trie-prefix-tree/discuss/150083/trie-in-python', 'article', 'module-1', 15),
-  createResource('m1-trie-r2', 'LeetCode 208 - Implement Trie', 'https://leetcode.com/problems/implement-trie-prefix-tree/', 'leetcode', 'module-1', 25, 'Medium', 'Trie'),
-  createResource('m1-trie-r3', 'LeetCode 212 - Word Search II', 'https://leetcode.com/problems/word-search-ii/', 'leetcode', 'module-1', 35, 'Hard', 'Trie'),
-  createResource('m1-trie-r4', 'LeetCode 1268 - Search Suggestions System', 'https://leetcode.com/problems/search-suggestions-system/', 'leetcode', 'module-1', 25, 'Medium', 'Trie'),
-  // Composite
-  createResource('m1-comp-r1', 'LeetCode 480 - Sliding Window Median', 'https://leetcode.com/problems/sliding-window-median/', 'leetcode', 'module-1', 35, 'Hard', 'Composite'),
-  createResource('m1-comp-r2', 'LeetCode 315 - Count of Smaller Numbers After Self', 'https://leetcode.com/problems/count-of-smaller-numbers-after-self/', 'leetcode', 'module-1', 35, 'Hard', 'Composite'),
-  createResource('m1-comp-r3', 'LeetCode 23 - Merge K Sorted Lists', 'https://leetcode.com/problems/merge-k-sorted-lists/', 'leetcode', 'module-1', 30, 'Hard', 'Composite'),
-  createResource('m1-comp-r4', 'LeetCode 854 - K-Similar Strings', 'https://leetcode.com/problems/k-similar-strings/', 'leetcode', 'module-1', 35, 'Hard', 'Composite'),
-  createResource('m1-comp-r5', 'LeetCode 329 - Longest Increasing Path in Matrix', 'https://leetcode.com/problems/longest-increasing-path-in-a-matrix/', 'leetcode', 'module-1', 30, 'Hard', 'Composite'),
-];
+// Module 1: Use generated DSA resources (900+ resources for 300+ problems)
+const module1Resources: Resource[] = generateDSAResources();
 
+// Module 1: Comprehensive DSA Checklist (AlgoMaster 300+ Problems)
 const module1Checklist: ChecklistItem[] = [
-  // Sliding Window
-  createChecklistItem('m1-sw-c1', 'Read: Sliding Window Algorithm Template (10 mins)', 'module-1', 'Sliding Window', ['m1-sw-r1']),
-  createChecklistItem('m1-sw-c2', 'Watch: Sliding Window FIXED + VARIABLE (20 mins)', 'module-1', 'Sliding Window', ['m1-sw-r2']),
-  createChecklistItem('m1-sw-c3', 'Solve: LeetCode 121 - Best Time to Buy/Sell Stock', 'module-1', 'Sliding Window', ['m1-sw-r3']),
-  createChecklistItem('m1-sw-c4', 'Solve: LeetCode 3 - Longest Substring Without Repeating', 'module-1', 'Sliding Window', ['m1-sw-r4']),
-  createChecklistItem('m1-sw-c5', 'Solve: LeetCode 76 - Minimum Window Substring', 'module-1', 'Sliding Window', ['m1-sw-r5']),
-  createChecklistItem('m1-sw-c6', 'Solve: LeetCode 209 - Minimum Size Subarray Sum', 'module-1', 'Sliding Window', ['m1-sw-r6']),
-  createChecklistItem('m1-sw-c7', 'Solve: LeetCode 567 - Permutation in String', 'module-1', 'Sliding Window', ['m1-sw-r7']),
-  createChecklistItem('m1-sw-c8', 'Validate: Implement template from scratch without notes', 'module-1', 'Sliding Window', [], true),
+  // Arrays & Strings
+  createChecklistItem('m1-arrays-c1', 'Complete all Arrays pattern problems (10 problems)', 'module-1', 'Arrays', [], false, 300),
+  createChecklistItem('m1-arrays-v1', 'Validate: Solve Product of Array Except Self in 20 min', 'module-1', 'Arrays', [], true),
+  createChecklistItem('m1-strings-c1', 'Complete all Strings pattern problems (6 problems)', 'module-1', 'Strings', [], false, 180),
+  createChecklistItem('m1-strings-v1', 'Validate: Implement valid palindrome with two pointers', 'module-1', 'Strings', [], true),
+  
+  // Bit Manipulation
+  createChecklistItem('m1-bit-c1', 'Complete all Bit Manipulation problems (7 problems)', 'module-1', 'Bit Manipulation', [], false, 210),
+  createChecklistItem('m1-bit-v1', 'Validate: Explain XOR operation and use cases', 'module-1', 'Bit Manipulation', [], true),
+  
+  // Hash Tables
+  createChecklistItem('m1-hash-c1', 'Complete all Hash Tables problems (13 problems)', 'module-1', 'Hash Tables', [], false, 390),
+  createChecklistItem('m1-hash-v1', 'Validate: Design a HashMap from scratch', 'module-1', 'Hash Tables', [], true),
+  
   // Two Pointers
-  createChecklistItem('m1-tp-c1', 'Read: Two Pointers Technique (8 mins)', 'module-1', 'Two Pointers', ['m1-tp-r1']),
-  createChecklistItem('m1-tp-c2', 'Read: When to use Hashing vs Two Pointers (5 mins)', 'module-1', 'Two Pointers', ['m1-tp-r2']),
-  createChecklistItem('m1-tp-c3', 'Solve: LeetCode 167 - Two Sum II', 'module-1', 'Two Pointers', ['m1-tp-r3']),
-  createChecklistItem('m1-tp-c4', 'Solve: LeetCode 15 - 3Sum', 'module-1', 'Two Pointers', ['m1-tp-r4']),
-  createChecklistItem('m1-tp-c5', 'Solve: LeetCode 11 - Container With Most Water', 'module-1', 'Two Pointers', ['m1-tp-r5']),
-  createChecklistItem('m1-tp-c6', 'Solve: LeetCode 26 - Remove Duplicates', 'module-1', 'Two Pointers', ['m1-tp-r6']),
-  createChecklistItem('m1-tp-c7', 'Validate: Code 3Sum in 15 minutes without hints', 'module-1', 'Two Pointers', [], true),
+  createChecklistItem('m1-tp-c1', 'Complete all Two Pointers problems (5 problems)', 'module-1', 'Two Pointers', [], false, 150),
+  createChecklistItem('m1-tp-v1', 'Validate: Solve 3Sum in 15 minutes without hints', 'module-1', 'Two Pointers', [], true),
+  
   // Prefix Sum
-  createChecklistItem('m1-ps-c1', 'Read: Prefix Sum Array (15 mins)', 'module-1', 'Prefix Sum', ['m1-ps-r1']),
-  createChecklistItem('m1-ps-c2', 'Solve: LeetCode 238 - Product of Array Except Self', 'module-1', 'Prefix Sum', ['m1-ps-r2']),
-  createChecklistItem('m1-ps-c3', 'Solve: LeetCode 560 - Subarray Sum Equals K', 'module-1', 'Prefix Sum', ['m1-ps-r3']),
-  createChecklistItem('m1-ps-c4', 'Validate: Solve 560 using both Brute Force O(N²) and Optimized O(N)', 'module-1', 'Prefix Sum', [], true),
-  // Binary Search
-  createChecklistItem('m1-bs-c1', 'Read: Binary Search Template (15 mins)', 'module-1', 'Binary Search', ['m1-bs-r1']),
-  createChecklistItem('m1-bs-c2', 'Read: Binary Search on Answer (20 mins)', 'module-1', 'Binary Search', ['m1-bs-r2']),
-  createChecklistItem('m1-bs-c3', 'Solve: LeetCode 704 - Binary Search', 'module-1', 'Binary Search', ['m1-bs-r3']),
-  createChecklistItem('m1-bs-c4', 'Solve: LeetCode 33 - Search in Rotated Sorted Array', 'module-1', 'Binary Search', ['m1-bs-r4']),
-  createChecklistItem('m1-bs-c5', 'Solve: LeetCode 153 - Find Minimum in Rotated Sorted Array', 'module-1', 'Binary Search', ['m1-bs-r5']),
-  createChecklistItem('m1-bs-c6', 'Solve: LeetCode 875 - Koko Eating Bananas', 'module-1', 'Binary Search', ['m1-bs-r6']),
-  createChecklistItem('m1-bs-c7', 'Solve: LeetCode 1011 - Capacity To Ship Packages', 'module-1', 'Binary Search', ['m1-bs-r7']),
-  createChecklistItem('m1-bs-c8', 'Solve: LeetCode 410 - Split Array Largest Sum', 'module-1', 'Binary Search', ['m1-bs-r8']),
-  createChecklistItem('m1-bs-c9', 'Validate: Write Binary Search template from scratch', 'module-1', 'Binary Search', [], true),
+  createChecklistItem('m1-ps-c1', 'Complete all Prefix Sum problems (5 problems)', 'module-1', 'Prefix Sum', [], false, 150),
+  createChecklistItem('m1-ps-v1', 'Validate: Solve Subarray Sum Equals K with hashmap', 'module-1', 'Prefix Sum', [], true),
+  
+  // Sliding Window
+  createChecklistItem('m1-sw-c1', 'Complete all Sliding Window Fixed Size problems (5 problems)', 'module-1', 'Sliding Window', [], false, 150),
+  createChecklistItem('m1-sw-c2', 'Complete all Sliding Window Dynamic Size problems (5 problems)', 'module-1', 'Sliding Window', [], false, 200),
+  createChecklistItem('m1-sw-v1', 'Validate: Implement sliding window template from scratch', 'module-1', 'Sliding Window', [], true),
+  
+  // Kadane's Algorithm
+  createChecklistItem('m1-kadane-c1', 'Complete all Kadane\'s Algorithm problems (4 problems)', 'module-1', "Kadane's Algorithm", [], false, 120),
+  createChecklistItem('m1-kadane-v1', 'Validate: Solve Maximum Subarray with O(N) solution', 'module-1', "Kadane's Algorithm", [], true),
+  
+  // Matrix
+  createChecklistItem('m1-matrix-c1', 'Complete all Matrix problems (5 problems)', 'module-1', 'Matrix', [], false, 150),
+  createChecklistItem('m1-matrix-v1', 'Validate: Implement spiral matrix traversal', 'module-1', 'Matrix', [], true),
+  
   // Linked List
-  createChecklistItem('m1-ll-c1', 'Read: Linked List Patterns (12 mins)', 'module-1', 'Linked List', ['m1-ll-r1']),
-  createChecklistItem('m1-ll-c2', 'Visualize: VisuAlgo Linked List (10 mins)', 'module-1', 'Linked List', ['m1-ll-r2']),
-  createChecklistItem('m1-ll-c3', 'Solve: LeetCode 206 - Reverse Linked List', 'module-1', 'Linked List', ['m1-ll-r3']),
-  createChecklistItem('m1-ll-c4', 'Solve: LeetCode 141 - Linked List Cycle', 'module-1', 'Linked List', ['m1-ll-r4']),
-  createChecklistItem('m1-ll-c5', 'Solve: LeetCode 142 - Linked List Cycle II', 'module-1', 'Linked List', ['m1-ll-r5']),
-  createChecklistItem('m1-ll-c6', 'Solve: LeetCode 19 - Remove Nth Node From End', 'module-1', 'Linked List', ['m1-ll-r6']),
-  createChecklistItem('m1-ll-c7', 'Solve: LeetCode 21 - Merge Two Sorted Lists', 'module-1', 'Linked List', ['m1-ll-r7']),
-  createChecklistItem('m1-ll-c8', 'Validate: Draw Floyd\'s Cycle detection proof on paper', 'module-1', 'Linked List', [], true),
-  // Stack
-  createChecklistItem('m1-stack-c1', 'Read: Monotonic Stack Explained (10 mins)', 'module-1', 'Stack', ['m1-stack-r1']),
-  createChecklistItem('m1-stack-c2', 'Solve: LeetCode 20 - Valid Parentheses', 'module-1', 'Stack', ['m1-stack-r2']),
-  createChecklistItem('m1-stack-c3', 'Solve: LeetCode 739 - Daily Temperatures', 'module-1', 'Stack', ['m1-stack-r3']),
-  createChecklistItem('m1-stack-c4', 'Solve: LeetCode 84 - Largest Rectangle in Histogram', 'module-1', 'Stack', ['m1-stack-r4']),
-  createChecklistItem('m1-stack-c5', 'Solve: LeetCode 155 - Min Stack', 'module-1', 'Stack', ['m1-stack-r5']),
-  createChecklistItem('m1-stack-c6', 'Validate: Explain why Monotonic Stack is O(N)', 'module-1', 'Stack', [], true),
-  // Trees
-  createChecklistItem('m1-tree-c1', 'Read: DFS & BFS Tree Traversal (20 mins)', 'module-1', 'Trees', ['m1-tree-r1']),
-  createChecklistItem('m1-tree-c2', 'Browse: Tree Patterns list (15 mins)', 'module-1', 'Trees', ['m1-tree-r2']),
-  createChecklistItem('m1-tree-c3', 'Solve: LeetCode 104 - Maximum Depth', 'module-1', 'Trees', ['m1-tree-r3']),
-  createChecklistItem('m1-tree-c4', 'Solve: LeetCode 543 - Diameter of Binary Tree', 'module-1', 'Trees', ['m1-tree-r4']),
-  createChecklistItem('m1-tree-c5', 'Solve: LeetCode 124 - Binary Tree Maximum Path Sum', 'module-1', 'Trees', ['m1-tree-r5']),
-  createChecklistItem('m1-tree-c6', 'Solve: LeetCode 226 - Invert Binary Tree', 'module-1', 'Trees', ['m1-tree-r6']),
-  createChecklistItem('m1-tree-c7', 'Solve: LeetCode 102 - Binary Tree Level Order Traversal', 'module-1', 'Trees', ['m1-tree-r7']),
-  createChecklistItem('m1-tree-c8', 'Solve: LeetCode 199 - Binary Tree Right Side View', 'module-1', 'Trees', ['m1-tree-r8']),
-  createChecklistItem('m1-tree-c9', 'Solve: LeetCode 98 - Validate Binary Search Tree', 'module-1', 'Trees', ['m1-tree-r9']),
-  createChecklistItem('m1-tree-c10', 'Solve: LeetCode 235 - Lowest Common Ancestor of BST', 'module-1', 'Trees', ['m1-tree-r10']),
-  createChecklistItem('m1-tree-c11', 'Validate: Solve 104 using BFS and DFS; discuss complexity', 'module-1', 'Trees', [], true),
-  // Graphs
-  createChecklistItem('m1-graph-c1', 'Read: Graph Algorithms - BFS/DFS sections', 'module-1', 'Graphs', ['m1-graph-r1']),
-  createChecklistItem('m1-graph-c2', 'Read: Union Find (15 mins)', 'module-1', 'Graphs', ['m1-graph-r2']),
-  createChecklistItem('m1-graph-c3', 'Solve: LeetCode 200 - Number of Islands', 'module-1', 'Graphs', ['m1-graph-r3']),
-  createChecklistItem('m1-graph-c4', 'Solve: LeetCode 133 - Clone Graph', 'module-1', 'Graphs', ['m1-graph-r4']),
-  createChecklistItem('m1-graph-c5', 'Solve: LeetCode 417 - Pacific Atlantic Water Flow', 'module-1', 'Graphs', ['m1-graph-r5']),
-  createChecklistItem('m1-graph-c6', 'Solve: LeetCode 207 - Course Schedule', 'module-1', 'Graphs', ['m1-graph-r6']),
-  createChecklistItem('m1-graph-c7', 'Solve: LeetCode 210 - Course Schedule II', 'module-1', 'Graphs', ['m1-graph-r7']),
-  createChecklistItem('m1-graph-c8', 'Solve: LeetCode 323 - Number of Connected Components', 'module-1', 'Graphs', ['m1-graph-r8']),
-  createChecklistItem('m1-graph-c9', 'Solve: LeetCode 547 - Number of Provinces', 'module-1', 'Graphs', ['m1-graph-r9']),
-  createChecklistItem('m1-graph-c10', 'Solve: LeetCode 684 - Redundant Connection', 'module-1', 'Graphs', ['m1-graph-r10']),
-  createChecklistItem('m1-graph-c11', 'Solve: LeetCode 127 - Word Ladder', 'module-1', 'Graphs', ['m1-graph-r11']),
-  createChecklistItem('m1-graph-c12', 'Solve: LeetCode 269 - Alien Dictionary', 'module-1', 'Graphs', ['m1-graph-r12']),
-  createChecklistItem('m1-graph-c13', 'Validate: Implement Union Find with Path Compression', 'module-1', 'Graphs', [], true),
+  createChecklistItem('m1-ll-c1', 'Complete all Linked List problems (10 problems)', 'module-1', 'Linked List', [], false, 300),
+  createChecklistItem('m1-ll-c2', 'Complete all Linked List In-place Reversal problems (4 problems)', 'module-1', 'Linked List', [], false, 120),
+  createChecklistItem('m1-ll-v1', 'Validate: Reverse linked list iteratively and recursively', 'module-1', 'Linked List', [], true),
+  
+  // Fast and Slow Pointers
+  createChecklistItem('m1-fsp-c1', 'Complete all Fast and Slow Pointers problems (3 problems)', 'module-1', 'Two Pointers', [], false, 90),
+  createChecklistItem('m1-fsp-v1', 'Validate: Detect cycle using Floyd\'s algorithm', 'module-1', 'Two Pointers', [], true),
+  
+  // Stacks
+  createChecklistItem('m1-stack-c1', 'Complete all Stacks problems (8 problems)', 'module-1', 'Stack', [], false, 240),
+  createChecklistItem('m1-stack-c2', 'Complete all Monotonic Stack problems (6 problems)', 'module-1', 'Monotonic Stack', [], false, 240),
+  createChecklistItem('m1-stack-v1', 'Validate: Explain why Monotonic Stack is O(N)', 'module-1', 'Stack', [], true),
+  
+  // Queues
+  createChecklistItem('m1-queue-c1', 'Complete all Queues problems (3 problems)', 'module-1', 'Queue', [], false, 90),
+  createChecklistItem('m1-queue-c2', 'Complete all Monotonic Queue problems (4 problems)', 'module-1', 'Monotonic Queue', [], false, 150),
+  
+  // Bucket Sort
+  createChecklistItem('m1-bucket-c1', 'Complete all Bucket Sort problems (3 problems)', 'module-1', 'Bucket Sort', [], false, 90),
+  
+  // Binary Search
+  createChecklistItem('m1-bs-c1', 'Complete all Binary Search problems (9 problems)', 'module-1', 'Binary Search', [], false, 270),
+  createChecklistItem('m1-bs-v1', 'Validate: Write Binary Search template from scratch', 'module-1', 'Binary Search', [], true),
+  
+  // Binary Tree
+  createChecklistItem('m1-tree-c1', 'Complete all Binary Tree problems (13 problems)', 'module-1', 'Trees', [], false, 390),
+  createChecklistItem('m1-tree-v1', 'Validate: Implement DFS and BFS traversals', 'module-1', 'Trees', [], true),
+  
+  // Graph
+  createChecklistItem('m1-graph-c1', 'Complete all Graph problems (11 problems)', 'module-1', 'Graphs', [], false, 330),
+  createChecklistItem('m1-graph-v1', 'Validate: Implement Union Find with Path Compression', 'module-1', 'Graphs', [], true),
+  
   // Backtracking
-  createChecklistItem('m1-bt-c1', 'Read: Backtracking Template', 'module-1', 'Backtracking', ['m1-bt-r1']),
-  createChecklistItem('m1-bt-c2', 'Solve: LeetCode 46 - Permutations', 'module-1', 'Backtracking', ['m1-bt-r2']),
-  createChecklistItem('m1-bt-c3', 'Solve: LeetCode 78 - Subsets', 'module-1', 'Backtracking', ['m1-bt-r3']),
-  createChecklistItem('m1-bt-c4', 'Solve: LeetCode 51 - N-Queens', 'module-1', 'Backtracking', ['m1-bt-r4']),
-  createChecklistItem('m1-bt-c5', 'Solve: LeetCode 37 - Sudoku Solver', 'module-1', 'Backtracking', ['m1-bt-r5']),
-  createChecklistItem('m1-bt-c6', 'Solve: LeetCode 79 - Word Search', 'module-1', 'Backtracking', ['m1-bt-r6']),
-  createChecklistItem('m1-bt-c7', 'Validate: Draw recursion tree for Subsets problem', 'module-1', 'Backtracking', [], true),
-  // DP
-  createChecklistItem('m1-dp-c1', 'Watch: DP Patterns (1 hour)', 'module-1', 'Dynamic Programming', ['m1-dp-r1']),
-  createChecklistItem('m1-dp-c2', 'Read: DP 14 Patterns', 'module-1', 'Dynamic Programming', ['m1-dp-r2']),
-  createChecklistItem('m1-dp-c3', 'Solve: LeetCode 70 - Climbing Stairs', 'module-1', 'Dynamic Programming', ['m1-dp-r3']),
-  createChecklistItem('m1-dp-c4', 'Solve: LeetCode 198 - House Robber', 'module-1', 'Dynamic Programming', ['m1-dp-r4']),
-  createChecklistItem('m1-dp-c5', 'Solve: LeetCode 322 - Coin Change', 'module-1', 'Dynamic Programming', ['m1-dp-r5']),
-  createChecklistItem('m1-dp-c6', 'Solve: LeetCode 1143 - Longest Common Subsequence', 'module-1', 'Dynamic Programming', ['m1-dp-r6']),
-  createChecklistItem('m1-dp-c7', 'Solve: LeetCode 72 - Edit Distance', 'module-1', 'Dynamic Programming', ['m1-dp-r7']),
-  createChecklistItem('m1-dp-c8', 'Solve: LeetCode 5 - Longest Palindromic Substring', 'module-1', 'Dynamic Programming', ['m1-dp-r8']),
-  createChecklistItem('m1-dp-c9', 'Solve: LeetCode 62 - Unique Paths', 'module-1', 'Dynamic Programming', ['m1-dp-r9']),
-  createChecklistItem('m1-dp-c10', 'Solve: LeetCode 64 - Minimum Path Sum', 'module-1', 'Dynamic Programming', ['m1-dp-r10']),
-  createChecklistItem('m1-dp-c11', 'Solve: LeetCode 416 - Partition Equal Subset Sum', 'module-1', 'Dynamic Programming', ['m1-dp-r11']),
-  createChecklistItem('m1-dp-c12', 'Solve: LeetCode 494 - Target Sum', 'module-1', 'Dynamic Programming', ['m1-dp-r12']),
-  createChecklistItem('m1-dp-c13', 'Solve: LeetCode 337 - House Robber III', 'module-1', 'Dynamic Programming', ['m1-dp-r13']),
-  createChecklistItem('m1-dp-c14', 'Solve: LeetCode 123 - Best Time to Buy/Sell Stock III', 'module-1', 'Dynamic Programming', ['m1-dp-r14']),
-  createChecklistItem('m1-dp-c15', 'Validate: Write recurrence relation for Coin Change', 'module-1', 'Dynamic Programming', [], true),
+  createChecklistItem('m1-bt-c1', 'Complete all Backtracking problems (11 problems)', 'module-1', 'Backtracking', [], false, 330),
+  createChecklistItem('m1-bt-v1', 'Validate: Draw recursion tree for Permutations', 'module-1', 'Backtracking', [], true),
+  
+  // Dynamic Programming
+  createChecklistItem('m1-dp-c1', 'Complete all Dynamic Programming problems (18 problems)', 'module-1', 'Dynamic Programming', [], false, 540),
+  createChecklistItem('m1-dp-v1', 'Validate: Write recurrence relation for Coin Change', 'module-1', 'Dynamic Programming', [], true),
+  
   // Heap
-  createChecklistItem('m1-heap-c1', 'Read: Heaps in Python (10 mins)', 'module-1', 'Heap', ['m1-heap-r1']),
-  createChecklistItem('m1-heap-c2', 'Solve: LeetCode 215 - Kth Largest Element', 'module-1', 'Heap', ['m1-heap-r2']),
-  createChecklistItem('m1-heap-c3', 'Solve: LeetCode 295 - Find Median from Data Stream', 'module-1', 'Heap', ['m1-heap-r3']),
-  createChecklistItem('m1-heap-c4', 'Solve: LeetCode 253 - Meeting Rooms II', 'module-1', 'Heap', ['m1-heap-r4']),
-  createChecklistItem('m1-heap-c5', 'Validate: Implement Heap Sort from scratch', 'module-1', 'Heap', [], true),
+  createChecklistItem('m1-heap-c1', 'Complete all Heap/Priority Queue problems (6 problems)', 'module-1', 'Heap', [], false, 180),
+  createChecklistItem('m1-heap-v1', 'Validate: Implement Heap Sort from scratch', 'module-1', 'Heap', [], true),
+  
   // Trie
-  createChecklistItem('m1-trie-c1', 'Read: Implement Trie (15 mins)', 'module-1', 'Trie', ['m1-trie-r1']),
-  createChecklistItem('m1-trie-c2', 'Solve: LeetCode 208 - Implement Trie', 'module-1', 'Trie', ['m1-trie-r2']),
-  createChecklistItem('m1-trie-c3', 'Solve: LeetCode 212 - Word Search II', 'module-1', 'Trie', ['m1-trie-r3']),
-  createChecklistItem('m1-trie-c4', 'Solve: LeetCode 1268 - Search Suggestions System', 'module-1', 'Trie', ['m1-trie-r4']),
-  createChecklistItem('m1-trie-c5', 'Validate: Write TrieNode class from scratch', 'module-1', 'Trie', [], true),
-  // Composite
-  createChecklistItem('m1-comp-c1', 'Solve: LeetCode 480 - Sliding Window Median', 'module-1', 'Composite', ['m1-comp-r1']),
-  createChecklistItem('m1-comp-c2', 'Solve: LeetCode 315 - Count of Smaller Numbers After Self', 'module-1', 'Composite', ['m1-comp-r2']),
-  createChecklistItem('m1-comp-c3', 'Solve: LeetCode 23 - Merge K Sorted Lists', 'module-1', 'Composite', ['m1-comp-r3']),
-  createChecklistItem('m1-comp-c4', 'Solve: LeetCode 854 - K-Similar Strings', 'module-1', 'Composite', ['m1-comp-r4']),
-  createChecklistItem('m1-comp-c5', 'Solve: LeetCode 329 - Longest Increasing Path in Matrix', 'module-1', 'Composite', ['m1-comp-r5']),
-  // Module 1 Checkpoint
-  createChecklistItem('m1-checkpoint', 'MODULE 1 CHECKPOINT: Solve LC76, LC84, LC72 back-to-back in 60 minutes', 'module-1', 'Checkpoint', [], true, 60),
+  createChecklistItem('m1-trie-c1', 'Complete all Trie problems (4 problems)', 'module-1', 'Trie', [], false, 120),
+  createChecklistItem('m1-trie-v1', 'Validate: Write TrieNode class with insert and search', 'module-1', 'Trie', [], true),
+  
+  // Union Find
+  createChecklistItem('m1-uf-c1', 'Complete all Union Find problems (5 problems)', 'module-1', 'Union Find', [], false, 150),
+  
+  // Topological Sort
+  createChecklistItem('m1-ts-c1', 'Complete all Topological Sort problems (3 problems)', 'module-1', 'Topological Sort', [], false, 90),
+  
+  // Design
+  createChecklistItem('m1-design-c1', 'Complete all Design problems (8 problems)', 'module-1', 'Design', [], false, 240),
+  
+  // Intervals
+  createChecklistItem('m1-intervals-c1', 'Complete all Intervals problems (6 problems)', 'module-1', 'Intervals', [], false, 180),
+  
+  // Greedy
+  createChecklistItem('m1-greedy-c1', 'Complete all Greedy problems (7 problems)', 'module-1', 'Greedy', [], false, 210),
+  
+  // Recursion
+  createChecklistItem('m1-recursion-c1', 'Complete all Recursion problems (5 problems)', 'module-1', 'Recursion', [], false, 150),
+  
+  // Math & Geometry
+  createChecklistItem('m1-math-c1', 'Complete all Math & Geometry problems (6 problems)', 'module-1', 'Math', [], false, 180),
+  
+  // Advanced Data Structures
+  createChecklistItem('m1-segment-c1', 'Complete all Segment Tree problems (4 problems)', 'module-1', 'Segment Tree', [], false, 200),
+  createChecklistItem('m1-bitree-c1', 'Complete all Binary Indexed Tree problems (3 problems)', 'module-1', 'Binary Indexed Tree', [], false, 180),
+  
+  // Module 1 Final Checkpoint
+  createChecklistItem('m1-checkpoint-1', 'Checkpoint 1: Solve 3 Medium problems in 45 min (Random)', 'module-1', 'Checkpoint', [], true, 45),
+  createChecklistItem('m1-checkpoint-2', 'Checkpoint 2: Solve 2 Hard problems in 60 min (Random)', 'module-1', 'Checkpoint', [], true, 60),
+  createChecklistItem('m1-checkpoint-3', 'FINAL CHECKPOINT: Solve 5 problems (1 Easy, 3 Medium, 1 Hard) in 90 min', 'module-1', 'Checkpoint', [], true, 90),
 ];
 
 // Module 2: LLD Mastery
@@ -939,7 +642,7 @@ export const modules: Module[] = [
     id: 'module-1',
     title: 'Module 1: Pattern-Based DSA Mastery',
     shortTitle: 'DSA',
-    description: '12 pattern categories with 75+ LeetCode problems. Master the fundamental algorithms and data structures.',
+    description: `AlgoMaster 300+ problems across 32 pattern categories. ${dsaStats.easy} Easy, ${dsaStats.medium} Medium, ${dsaStats.hard} Hard problems with solutions and video explanations.`,
     status: 'available',
     isLocked: false,
     isCompleted: false,
@@ -947,8 +650,8 @@ export const modules: Module[] = [
     prerequisites: ['module-0'],
     checklist: module1Checklist,
     resources: module1Resources,
-    estimatedDays: 45,
-    targetProblems: 75,
+    estimatedDays: 90,
+    targetProblems: totalDSAProblems,
     color: 'emerald',
   },
   {
